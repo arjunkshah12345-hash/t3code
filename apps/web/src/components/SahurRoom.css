@@ -1,0 +1,188 @@
+@utility sahur-room {
+  position: fixed;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  right: max(12px, env(safe-area-inset-right));
+  z-index: 35;
+  color: var(--foreground);
+  font-family: inherit;
+}
+.sahur-room button {
+  cursor: pointer;
+  font: inherit;
+}
+.sahur-room button:focus-visible,
+.sahur-secrets summary:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 4px;
+}
+@utility sahur-room-toggle {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-left: auto;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--popover);
+  color: var(--foreground);
+  box-shadow: 0 2px 12px #27160b12;
+  font-size: 10px !important;
+  letter-spacing: 0.12em;
+}
+.sahur-room-toggle > :first-child {
+  color: var(--primary);
+  font-size: 19px;
+  line-height: 1;
+}
+@utility sahur-room-count {
+  opacity: 0.55;
+  font-variant-numeric: tabular-nums;
+}
+@utility sahur-room-panel {
+  width: min(320px, calc(100vw - 24px));
+  max-height: min(650px, calc(100dvh - 80px));
+  overflow-y: auto;
+  margin-bottom: 10px;
+  padding: 20px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background: var(--popover);
+  box-shadow: 0 16px 70px #27160b30;
+}
+@utility sahur-room-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+@utility sahur-eyebrow {
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--muted-foreground);
+}
+@utility sahur-close {
+  border: 0;
+  background: none;
+  color: var(--muted-foreground);
+  padding: 4px 7px;
+  font-size: 22px !important;
+}
+@utility sahur-mascot-button {
+  display: block;
+  width: 140px;
+  margin: 8px auto 2px;
+  padding: 0;
+  border: 0;
+  background: none;
+  border-radius: 12px;
+  touch-action: manipulation;
+}
+.sahur-mascot-button:active {
+  transform: rotate(-4deg) scale(0.96);
+}
+.sahur-mascot-button svg {
+  width: 100%;
+}
+.sahur-room-panel h2 {
+  font-size: 24px;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  text-align: center;
+}
+@utility sahur-room-message {
+  min-height: 38px;
+  margin: 8px 0 14px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+@utility sahur-room-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+@utility sahur-reset {
+  border: 1px solid var(--border);
+  background: var(--secondary);
+  color: var(--foreground);
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 12px !important;
+}
+.sahur-room-controls button {
+  @apply sahur-reset;
+}
+.sahur-room-controls button[aria-pressed="true"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+@utility sahur-secrets {
+  margin-top: 20px;
+  border-top: 1px solid var(--border);
+  padding-top: 14px;
+  font-size: 12px;
+}
+.sahur-secrets summary {
+  cursor: pointer;
+  color: var(--muted-foreground);
+}
+.sahur-secrets ul {
+  list-style: none;
+  padding: 8px 0;
+}
+.sahur-secrets li {
+  padding: 6px 0;
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+.sahur-secrets li[data-found="true"] {
+  color: var(--primary);
+}
+@utility sahur-room-footnote {
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+}
+@utility sahur-hero-art {
+  width: 142px;
+  margin: 0 auto 14px;
+}
+@utility sahur-hero-label {
+  color: var(--primary);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  margin-bottom: 12px;
+}
+@media (max-width: 767px) {
+  .sahur-room {
+    bottom: max(62px, calc(env(safe-area-inset-bottom) + 48px));
+  }
+  .sahur-room-toggle {
+    padding: 7px 10px;
+  }
+  .sahur-room-toggle > span:not(:first-child) {
+    display: none;
+  }
+  .sahur-room-panel {
+    max-height: calc(100dvh - 150px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sahur-mascot-button:active {
+    transform: none;
+  }
+}
+@utility sahur-draft-art {
+  width: 88px;
+  height: 97px;
+  margin-bottom: 10px;
+}
+
+@media (max-height: 650px) {
+  .sahur-draft-art {
+    display: none;
+  }
+}

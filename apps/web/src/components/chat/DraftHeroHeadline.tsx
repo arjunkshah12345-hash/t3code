@@ -6,6 +6,7 @@ import { isScratchProject } from "@t3tools/client-runtime/state/projects";
 import { FolderPlusIcon } from "lucide-react";
 import { useAtomValue } from "@effect/atom-react";
 import { useRef, useState } from "react";
+import { SahurMascot } from "../SahurMascot";
 
 import { openCommandPalette } from "~/commandPaletteBus";
 import { shortcutLabelForCommand } from "~/keybindings";
@@ -338,6 +339,7 @@ export function DraftHeroHeadline({
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col items-center">
+      <SahurMascot className="sahur-draft-art" />
       {hasResolvedProject && !isScratchDraft ? (
         <DraftHeroProjectHeading projectName={activeProjectDisplayName ?? "Choose a project"}>
           {projectSelector}
@@ -345,7 +347,7 @@ export function DraftHeroHeadline({
       ) : (
         <h1 className="w-full text-center font-normal text-2xl text-foreground tracking-tight sm:text-3xl">
           {isScratchDraft ? (
-            <>What should we work on?</>
+            <>Wake up. Build something legendary.</>
           ) : canChooseProject ? (
             <>{projectSelector} to start</>
           ) : (

@@ -1,142 +1,77 @@
-# T3 Code
+# Tung Tung Tung Code
 
-T3 Code is an "agent harness control surface". It enables control of the agents on your machine with a best-in-class mobile app ([iOS](https://apps.apple.com/us/app/t3-code-remote-claude-more/id6787819824), [Android](https://play.google.com/store/apps/details?id=com.t3tools.t3code)), [web app](https://app.t3.codes) and [Electron-based desktop app](https://t3.codes).
+**Good code. Great aura. All wood.**
 
-Works with your subscriptions on Claude Code, Codex, Cursor, Grok Build, OpenCode, and Google Antigravity. If they're set up on your computer, T3 Code can control them.
+A fully Sahur-themed community fork of [T3 Code](https://github.com/pingdotgg/t3code): warm timber palettes, custom wooden-guardian branding, a redesigned website, and a coding-agent workspace that takes everything seriously except itself.
 
-## "Wait, what are you selling me?"
+![Tung Tung Tung Sahur](assets/sahur-mark.svg)
 
-Nothing. We built T3 Code because we wanted the best possible development experience with agents. We were inspired by existing solutions like the Codex desktop app, Conductor, Claude Desktop and Cursor Glass, but none met our bar.
+## Enter the village
 
-We wanted something performant, remote-ready, and truly open. If we ever go the wrong direction, we want you to have everything you need to fork and build the editor that you want.
+Use the Node and pnpm versions declared in `package.json`:
 
-## Installation
-
-> [!WARNING]
-> T3 Code currently supports Codex, Claude, Cursor, Grok Build, OpenCode, and Antigravity. Install and authenticate at least one provider before use:
->
-> - Codex: install [Codex CLI](https://developers.openai.com/codex/cli) and run `codex login`
-> - Claude: install [Claude Code](https://claude.com/product/claude-code) and run `claude auth login`
-> - Cursor: install [Cursor CLI](https://cursor.com/cli) and run `agent login`
-> - Grok Build: install [Grok Build CLI](https://x.ai/cli) and run `grok login`
-> - OpenCode: install [OpenCode](https://opencode.ai) and run `opencode auth login`
-> - Antigravity: enable it in Settings, then use **Install Antigravity** and **Sign in with Google**. No CLI is required.
-
-### Command line
-
-```bash
-curl -fsSL https://t3.codes/install.sh | sh
+```sh
+git clone https://github.com/arjunkshah12345-hash/t3code.git tung-tung-tung-code
+cd tung-tung-tung-code
+pnpm install
+pnpm dev
 ```
 
-On Windows, in PowerShell:
+Authenticate at least one supported coding-agent CLI first. Bring your own Claude Code, Codex, Cursor, Grok, OpenCode, or Antigravity setup. Provider subscriptions and credentials are yours; this fork does not provide them.
 
-```powershell
-irm https://t3.codes/install.ps1 | iex
+**Source builds only for now.** Upstream T3 installers, mobile-store listings, and hosted services are not releases of this fork. Changes in your local checkout are not published until committed and pushed.
+
+## The workspace
+
+- Warm light and dark wood palettes across web, desktop, and mobile.
+- Original wooden guardian, Sahur wordmark, desktop icons, mobile splash screens, favicons, and share artwork.
+- Projects, agent threads, terminals, diffs, and checkpoints from the upstream foundation.
+- An optional drum room with **17 discoveries**, local progress, and an explicit sound toggle.
+- A separate Astro website with original Sahur artwork and **six website secrets**.
+- A hidden Village OS 95 desktop. Find the suspicious clock in the website footer.
+
+## The lore
+
+Open **☾ SAHUR** in the app. Start with three knocks on the mascot.
+
+| Ritual                                                           | Discovery              |
+| ---------------------------------------------------------------- | ---------------------- |
+| 3, 33, 66, and 100 mascot knocks                                 | Four wooden milestones |
+| 7 and 33 moon taps                                               | Two lunar visitors     |
+| Type `sahur` or `tungtungtung`                                   | The original chants    |
+| Type `wood`, `bedug`, `aura`, `moonwalk`, `village`, or `wakeup` | Six village legends    |
+| ↑ ↑ ↓ ↓ ← → ← → B A                                              | The ancient rhythm     |
+| Open the drum room between 3–6 AM, local time                    | Dawn patrol            |
+| Open it between midnight–1 AM, local time                        | Midnight supervisor    |
+
+Typing rituals ignore text fields, editors, terminals, IME composition, and modified shortcuts. Sound is off by default and only plays after an intentional mascot click. Discoveries stay on your device and can be reset. No remote meme assets, autoplay, or perpetual background animations.
+
+The website has its own collection: three knocks, 33 knocks, seven moon taps, both original chants, and the ancient rhythm. Website discoveries last for the page visit and do not use cookies or local storage.
+
+## Run the website
+
+```sh
+pnpm --filter @t3tools/marketing dev
+pnpm --filter @t3tools/marketing build
 ```
 
-Then run `t3` to start the server and open the local web app. `t3 service install` keeps it running in the background, `t3 update` moves to a newer release, and `t3 --help` has the full reference.
+The included `Sahur website` GitHub Actions workflow builds and deploys the static site to GitHub Pages. Enable Pages with GitHub Actions as the source in the fork’s repository settings. Its project-path links follow the repository name automatically, including after a rename. Nothing is deployed until the changes are pushed and the workflow runs.
 
-To try it once without installing, run `npx t3@latest` instead.
+CLI updates, installer downloads, and desktop recovery links use this fork’s releases, never upstream binaries. No fork binaries are published yet; build from source until a release is available. Existing `t3` commands, archive names, and data-directory identifiers stay compatible.
 
-### Desktop app
+## Development
 
-Install the latest version of the desktop app from [GitHub Releases](https://github.com/pingdotgg/t3code/releases), or from your favorite package registry:
-
-#### Windows (`winget`)
-
-```bash
-winget install T3Tools.T3Code
+```sh
+pnpm exec vp test run apps/web/src/sahur.test.ts
+pnpm exec vp run @t3tools/web#typecheck
+pnpm icons:export
+pnpm icons:check
 ```
 
-#### Windows (`scoop`)
+Icons are generated from `assets/sahur-mark.svg`; see [the artwork guide](assets/README.md). Read [AGENTS.md](AGENTS.md) before changing the architecture. Internal workspace package names, data paths, provider contracts, and connection protocols retain compatible upstream identifiers where renaming would break integrations.
 
-```bash
-scoop install extras/t3code
-```
+## Roots, not impersonation
 
-#### macOS (Homebrew)
+This is an independent community fork, not an official T3 product. The upstream maintainers did not endorse this branding or its lore. Original copyright, [license](LICENSE), and third-party notices remain intact. Existing upstream service policies apply to their services, not to a new service operated by this fork.
 
-```bash
-brew install --cask t3-code
-```
-
-#### Debian, Ubuntu (`.deb`)
-
-Download the `.deb` from [GitHub Releases](https://github.com/pingdotgg/t3code/releases), then:
-
-```bash
-sudo apt install ./T3-Code-*.deb
-```
-
-#### Arch Linux (AUR)
-
-Stable:
-
-```bash
-yay -S t3code-bin
-```
-
-Nightly:
-
-```bash
-yay -S t3code-nightly-bin
-```
-
-The AUR packaging is maintained in this repository under [`packaging/aur`](./packaging/aur).
-
-## Some notes
-
-We are very very early in this project. Expect bugs.
-
-We are (mostly) not accepting contributions yet. Small fixes may be considered. Big features will not be.
-
-## Documentation
-
-Full docs live in [docs/](./docs). There's no docs site yet.
-
-- [FAQ](./docs/user/faq.md)
-- [Install and first run](./docs/user/install.md)
-- [Permission modes](./docs/user/permission-modes.md)
-- [Keyboard shortcuts](./docs/user/keybindings.md)
-- [Project settings](./docs/user/project-settings.md)
-- [Appearance preferences](./docs/user/appearance.md)
-- [Remote access from a phone or another machine](./docs/user/remote-access.md)
-- [Connect Claude Code, Codex, ChatGPT and other agents over MCP](./docs/user/outside-agents.md)
-- [Keeping app and server in sync](./docs/user/updating.md)
-- [Source control integrations](./docs/user/source-control.md)
-- Multiple accounts: [Codex](./docs/user/providers-codex.md) · [Claude](./docs/user/providers-claude.md)
-- [Run T3 Code as a background service](./docs/user/background-service.md)
-
-Building from source? Start at [docs/internals/overview.md](./docs/internals/overview.md).
-
-## If you REALLY want to contribute still.... read this first
-
-### Install `vp`
-
-T3 Code uses Vite+ so you'll need to install the global `vp` command-line tool.
-
-#### macOS / Linux
-
-```bash
-curl -fsSL https://vite.plus | bash
-```
-
-#### Windows
-
-```bash
-irm https://vite.plus/ps1 | iex
-```
-
-Checkout their getting started guide for more information: https://viteplus.dev/guide/
-
-### Install dependencies
-
-```bash
-vp i
-```
-
-Read [CONTRIBUTING.md](./CONTRIBUTING.md) before reporting a bug or opening a PR.
-
-Have a feature request? Start an [Ideas discussion](https://github.com/pingdotgg/t3code/discussions/categories/ideas).
-
-Need support? Join the [Discord](https://discord.gg/jn4EGJjrvv).
+Code quietly. Carry a big stick.

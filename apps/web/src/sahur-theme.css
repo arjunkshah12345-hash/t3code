@@ -1,0 +1,97 @@
+:root {
+  --sahur-art-0: #9c642f;
+  --sahur-art-1: #b5793b;
+  --sahur-art-2: #e3b06a;
+  --sahur-art-3: #bb8046;
+  --sahur-art-4: #895429;
+  --sahur-art-5: #fff2d5;
+  --sahur-art-6: #291c13;
+  --sahur-art-7: white;
+  --sahur-art-8: #58351d;
+  --sahur-art-9: #efb858;
+  --sahur-art-10: #b87939;
+  --sahur-art-11: #75431f;
+  --sahur-art-12: #fff4d9;
+  --sahur-art-13: #291d15;
+}
+
+html:not([data-theme-id]) {
+  --background: #fcf7ee;
+  --app-chrome-background: #fcf7ee;
+  --foreground: #32251c;
+  --card: #fffaf1;
+  --card-foreground: #32251c;
+  --popover: #fffaf1;
+  --popover-foreground: #32251c;
+  --primary: #98551f;
+  --primary-foreground: #fffaf1;
+  --secondary: #f6eddf;
+  --secondary-foreground: #32251c;
+  --muted: #f6eddf;
+  --muted-foreground: #846c55;
+  --accent: #f1e5d3;
+  --accent-foreground: #32251c;
+  --border: #e5d5bf;
+  --input: #d6bd9d;
+  --ring: #98551f;
+  --message-surface: #ecddc7;
+  --sidebar: #f6eddf;
+  --sidebar-foreground: #32251c;
+  --sidebar-muted-foreground: #846c55;
+  --sidebar-control-surface: #f1e5d3;
+  --sidebar-row-hover: #fcf7ee;
+  --sidebar-row-active: #fffaf1;
+  --sidebar-row-selected: #fffaf1;
+  --sidebar-border: #e5d5bf;
+  --sidebar-stage-fade: #f6eddf;
+  --surface-raised: #fffaf1;
+  --app-theme-terminal-background: #fcf7ee;
+  --app-theme-terminal-foreground: #32251c;
+  --app-theme-terminal-cursor: #98551f;
+  --app-theme-terminal-selection-background: #e5d5bf;
+}
+
+html.dark:not([data-theme-id]) {
+  --background: #18120e;
+  --app-chrome-background: #18120e;
+  --foreground: #f7ebd8;
+  --card: #211810;
+  --card-foreground: #f7ebd8;
+  --popover: #211810;
+  --popover-foreground: #f7ebd8;
+  --primary: #e8ab56;
+  --primary-foreground: #24180d;
+  --secondary: #211810;
+  --secondary-foreground: #f7ebd8;
+  --muted: #211810;
+  --muted-foreground: #b29a80;
+  --accent: #2b2016;
+  --accent-foreground: #f7ebd8;
+  --border: #3d2d20;
+  --input: #463323;
+  --ring: #e8ab56;
+  --message-surface: #2b2016;
+  --sidebar: #130f0b;
+  --sidebar-foreground: #f7ebd8;
+  --sidebar-muted-foreground: #bda68a;
+  --sidebar-control-surface: #211810;
+  --sidebar-row-hover: #2b2016;
+  --sidebar-row-active: #392a1c;
+  --sidebar-row-selected: #211810;
+  --sidebar-border: #3d2d20;
+  --sidebar-stage-fade: #130f0b;
+  --surface-raised: #211810;
+  --app-theme-terminal-background: #18120e;
+  --app-theme-terminal-foreground: #f7ebd8;
+  --app-theme-terminal-cursor: #f2be70;
+  --app-theme-terminal-selection-background: #614425;
+}
+
+html:not([data-theme-id]) [data-sidebar="sidebar"] {
+  background-image: repeating-linear-gradient(
+    92deg,
+    transparent 0 44px,
+    #b5793b06 45px 46px,
+    transparent 47px 93px
+  );
+}

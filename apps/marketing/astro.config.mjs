@@ -7,7 +7,9 @@ import { defineConfig } from "astro/config";
 delete process.env.VP_RUN_NODE_CLIENT_PATH;
 
 export default defineConfig({
-  site: "https://t3.codes",
+  site: process.env.PAGES_SITE_URL,
+  base: process.env.PAGES_BASE_PATH ?? "/",
+  trailingSlash: "always",
   server: {
     port: Number(process.env.PORT ?? 4173),
   },

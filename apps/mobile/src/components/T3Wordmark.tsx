@@ -1,28 +1,51 @@
 import type { ColorValue } from "react-native";
-import Svg, { Path } from "react-native-svg";
+import Svg, { Circle, Path, Rect, Text as SvgText } from "react-native-svg";
 import { withUniwind } from "uniwind";
 
-const ThemedPath = withUniwind(Path);
+const ThemedText = withUniwind(SvgText);
 
 export function T3Wordmark(props: {
   readonly height: number;
   readonly color?: ColorValue;
   readonly colorClassName?: string;
 }) {
-  const aspectRatio = 94.3941 / 56.96;
   return (
     <Svg
-      accessibilityLabel="T3"
+      accessibilityLabel="Tung Tung Tung Sahur"
       height={props.height}
-      width={props.height * aspectRatio}
-      viewBox="15.5309 37 94.3941 56.96"
+      width={props.height * 4.5}
+      viewBox="0 0 270 60"
     >
-      <ThemedPath
-        d="M33.4509 93V47.56H15.5309V37H64.3309V47.56H46.4109V93H33.4509ZM86.7253 93.96C82.832 93.96 78.9653 93.4533 75.1253 92.44C71.2853 91.3733 68.032 89.88 65.3653 87.96L70.4053 78.04C72.5386 79.5867 75.0186 80.8133 77.8453 81.72C80.672 82.6267 83.5253 83.08 86.4053 83.08C89.6586 83.08 92.2186 82.44 94.0853 81.16C95.952 79.88 96.8853 78.12 96.8853 75.88C96.8853 73.7467 96.0586 72.0667 94.4053 70.84C92.752 69.6133 90.0853 69 86.4053 69H80.4853V60.44L96.0853 42.76L97.5253 47.4H68.1653V37H107.365V45.4L91.8453 63.08L85.2853 59.32H89.0453C95.9253 59.32 101.125 60.8667 104.645 63.96C108.165 67.0533 109.925 71.0267 109.925 75.88C109.925 79.0267 109.099 81.9867 107.445 84.76C105.792 87.48 103.259 89.6933 99.8453 91.4C96.432 93.1067 92.0586 93.96 86.7253 93.96Z"
+      <Rect x="2" y="6" width="30" height="48" rx="13" fill="#b87939" />
+      <Path d="M9 12v13m7-16v9m9 13v15M10 41v7" stroke="#75431f" strokeWidth="2" />
+      <Circle cx="12" cy="27" r="3" fill="#fff4d9" />
+      <Circle cx="23" cy="27" r="3" fill="#fff4d9" />
+      <Circle cx="13" cy="27" r="1.5" fill="#291d15" />
+      <Circle cx="22" cy="27" r="1.5" fill="#291d15" />
+      <Path d="M12 35q5 6 11 0" fill="none" stroke="#291d15" strokeWidth="2" />
+      <ThemedText
+        x="43"
+        y="29"
+        fontSize="24"
+        fontWeight="900"
         color={props.color}
         colorClassName={props.colorClassName}
         fill="currentColor"
-      />
+      >
+        TUNG TUNG TUNG
+      </ThemedText>
+      <ThemedText
+        x="44"
+        y="49"
+        fontSize="16"
+        fontWeight="900"
+        letterSpacing="8"
+        color={props.color}
+        colorClassName={props.colorClassName}
+        fill="currentColor"
+      >
+        SAHUR
+      </ThemedText>
     </Svg>
   );
 }

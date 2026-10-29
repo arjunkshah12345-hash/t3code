@@ -879,7 +879,7 @@ export const SETTINGS_SEARCH_ITEMS = [
   },
   {
     id: "pull-request-links-open-in-app",
-    title: "Open pull requests in T3 Code",
+    title: "Open pull requests in Tung Tung Tung Code",
     to: "/settings/diffs",
     searchTerms: [
       `pr links ${SOURCE_CONTROL_HOST_LABELS} browser external click default pull request view panel`,

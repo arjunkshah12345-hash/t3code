@@ -1,8 +1,28 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { cliArchiveTarCommand, newestCliReleaseVersion, parseChecksums } from "./cliRelease.ts";
+import {
+  CLI_RELEASES_PAGE_URL,
+  cliArchiveTarCommand,
+  cliReleaseDownloadBaseUrl,
+  cliReleaseIndexPageUrl,
+  newestCliReleaseVersion,
+  parseChecksums,
+} from "./cliRelease.ts";
 
 describe("cliRelease", () => {
+  it("only discovers and downloads fork releases by default", () => {
+    expect(CLI_RELEASES_PAGE_URL).toBe("https://github.com/arjunkshah12345-hash/t3code/releases");
+    expect(cliReleaseIndexPageUrl(2)).toBe(
+      "https://api.github.com/repos/arjunkshah12345-hash/t3code/releases?per_page=100&page=2",
+    );
+    expect(cliReleaseDownloadBaseUrl("1.2.3")).toBe(
+      "https://github.com/arjunkshah12345-hash/t3code/releases/download/v1.2.3",
+    );
+    expect(cliReleaseDownloadBaseUrl("1.2.3", "https://releases.example.test/")).toBe(
+      "https://releases.example.test/v1.2.3",
+    );
+  });
+
   it("parses sha256sum output including binary-mode markers", () => {
     const checksums = parseChecksums(
       [

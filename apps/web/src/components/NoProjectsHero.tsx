@@ -8,6 +8,7 @@ import { Button } from "./ui/button";
 import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from "./ui/empty";
 import { SidebarInset } from "./ui/sidebar";
 import { WorkspacePageHeader } from "./WorkspacePageHeader";
+import { SahurMascot } from "./SahurMascot";
 
 export function NoProjectsHero() {
   const primaryEnvironmentId = usePrimaryEnvironmentId();
@@ -22,11 +23,13 @@ export function NoProjectsHero() {
         <Empty size="hero" className="flex-1">
           <div className="w-full max-w-lg px-8 py-12">
             <EmptyHeader className="max-w-none">
-              <EmptyTitle>What should we work on?</EmptyTitle>
+              <SahurMascot className="sahur-hero-art" />
+              <p className="sahur-hero-label">TUNG TUNG TUNG CODE</p>
+              <EmptyTitle>Wake up. Build something legendary.</EmptyTitle>
               <EmptyDescription>
                 {scratchTargetEnvironmentId === null
-                  ? "Add a project to start your first thread."
-                  : "Add a project, or start without one."}
+                  ? "The village is sleeping. Your next idea isn’t. Add a project to begin."
+                  : "Your agents are awake. Add a project, or follow the rhythm without one."}
               </EmptyDescription>
               <div className="mt-6 flex justify-center gap-2">
                 <Button size="sm" onClick={() => openCommandPalette({ open: "add-project" })}>

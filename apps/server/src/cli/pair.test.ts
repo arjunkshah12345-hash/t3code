@@ -287,7 +287,7 @@ describe("t3 pair", () => {
         const rendered = String(
           typeof error === "object" && error !== null && "cause" in error ? error.cause : error,
         );
-        assert.include(rendered, "No running T3 Code server found.");
+        assert.include(rendered, "No running Tung Tung Tung Code server found.");
       }),
     ).pipe(Effect.provide(NodeServices.layer)),
   );
@@ -323,7 +323,7 @@ describe("t3 pair", () => {
           ),
         );
 
-        assert.include(String(error), "No running T3 Code server found.");
+        assert.include(String(error), "No running Tung Tung Tung Code server found.");
         assert.notInclude(String(error), sharedHome);
         assert.deepEqual(NodeFS.readdirSync(NodePath.join(sharedHome, "userdata")), [
           "server-runtime.json",

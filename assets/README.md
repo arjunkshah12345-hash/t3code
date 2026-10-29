@@ -1,6 +1,13 @@
 # Brand icons
 
-The three Icon Composer projects are the source of truth for full application icons:
+This fork uses `sahur-mark.svg` as its application icon source. Run `pnpm icons:export`
+to reproducibly render Sahur PNGs, ICOs, favicons, mobile splash artwork, and marketing
+artwork. The generator uses the existing `sharp` dependency and preserves the classic
+macOS 824px icon safe area inside a transparent 1024px canvas. The Icon Composer
+projects below are retained as upstream editable sources; their text layers carry the
+Sahur mark. `icons:check` verifies this fork's generated artwork without writing files.
+
+The three retained Icon Composer projects receive the same generated Sahur artwork:
 
 - `dev/app-icon.icon`
 - `nightly/app-icon.icon`
@@ -54,7 +61,7 @@ Do not edit the generated PNG or ICO files directly.
 Android masks the central 72dp of a 108dp adaptive canvas, and the Android 12+ splash screen masks
 the central two thirds of a 288dp canvas, so the Icon Composer exports cannot be used directly:
 their rounded-square silhouette gets framed again and the wordmark is cropped. The Android artwork
-is instead rendered from the same Icon Composer SVG sources by `vp run icons:export:android`:
+is instead rendered from `sahur-mark.svg` by `vp run icons:export:android`:
 
 - `apps/mobile/assets/android-icon-foreground.png`: the shared transparent wordmark, sized to stay
   inside the safe zone

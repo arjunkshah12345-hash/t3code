@@ -22,10 +22,10 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer chan
     const server = NodeHttp.createServer((request, response) => {
       const url = new URL(request.url ?? "/", "http://fixture");
       const body =
-        url.pathname === "/pingdotgg/t3code/releases/latest" &&
+        url.pathname === "/arjunkshah12345-hash/t3code/releases/latest" &&
         request.headers.accept === "application/json"
           ? { tag_name: "v1.2.3" }
-          : url.pathname === "/repos/pingdotgg/t3code/releases"
+          : url.pathname === "/repos/arjunkshah12345-hash/t3code/releases"
             ? { "1": nightlies, "2": [{ tag_name: `v${version}` }, { tag_name: "v1.2.3" }] }[
                 url.searchParams.get("page") ?? ""
               ]
@@ -70,7 +70,7 @@ describe.skipIf(HostProcess.Platform.defaultValue() !== "linux")("installer chan
         },
       );
       expect(code, output).toBe(0);
-      expect(output).toContain(`Installed T3 Code ${version}`);
+      expect(output).toContain(`Installed Tung Tung Tung Code ${version}`);
     } finally {
       server.closeAllConnections();
       await new Promise<void>((resolve) => server.close(() => resolve()));

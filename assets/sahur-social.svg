@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#241b13"/>
+  <path d="M60 93h1080M60 547h1080" stroke="#64503a"/>
+  <text x="60" y="63" fill="#edb65c" font-family="Arial,sans-serif" font-weight="700" font-size="19" letter-spacing="3">TUNG TUNG TUNG CODE</text>
+  <text x="60" y="230" fill="#f4e9d7" font-family="Arial,sans-serif" font-weight="900" font-size="108" letter-spacing="-6">GOOD CODE.</text>
+  <text x="60" y="348" fill="#edb65c" font-family="Georgia,serif" font-style="italic" font-size="114" letter-spacing="-4">GREAT AURA.</text>
+  <text x="60" y="459" fill="#c4ae91" font-family="Arial,sans-serif" font-weight="900" font-size="108" letter-spacing="-6">ALL WOOD.</text>
+  <text x="60" y="591" fill="#c4ae91" font-family="Arial,sans-serif" font-size="17" letter-spacing="2">THE VILLAGE IS ASLEEP. YOUR IDEAS AREN’T.</text>
+  <rect x="927" y="145" width="145" height="278" rx="66" fill="#b77d43"/>
+  <path d="M954 176v56m90-32v74m-78 81v31" stroke="#92582e" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="969" cy="265" rx="24" ry="32" fill="#fff0cc"/><ellipse cx="1031" cy="265" rx="24" ry="32" fill="#fff0cc"/>
+  <ellipse cx="975" cy="270" rx="9" ry="16" fill="#312017"/><ellipse cx="1025" cy="270" rx="9" ry="16" fill="#312017"/>
+  <path d="M972 329q28 31 56 0" fill="#4f301e" stroke="#4f301e" stroke-width="5" stroke-linecap="round"/>
+  <path d="m969 421-8 59-29 13m102-72 8 59 29 13" stroke="#9c642f" stroke-width="14" stroke-linecap="round"/>
+  <path d="m1101 277 25 162" stroke="#c39255" stroke-width="20" stroke-linecap="round"/>
+</svg>
