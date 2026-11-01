@@ -38,13 +38,13 @@ installing one.
 `t3 uninstall` removes the background service, the `t3` launcher, and the
 downloaded versions after showing you the list and asking once. Your projects,
 threads, and settings under `~/.t3/userdata` are kept, along with `service.env`
-under T3 home. Pass `--yes` from a script.
+under Tung Tung Tung Code home. Pass `--yes` from a script.
 
 ## Local network access
 
 The service listens on your local network and Tailscale addresses, so the
 desktop and mobile apps on the same network connect directly instead of through
-T3 Connect. The hosted web app at app.t3.codes stays on T3 Connect, because
+Sahur Connect. The hosted web app at app.t3.codes stays on Sahur Connect, because
 browsers block plain HTTP from an HTTPS page. The service does not answer on
 public addresses, and every device still needs to pair or sign in. To keep the service reachable from this machine only, set
 `T3CODE_HOST=127.0.0.1` in `service.env` (below). Any `T3CODE_HOST` value
@@ -52,7 +52,7 @@ replaces this default.
 
 ## Configure the service environment
 
-Put custom environment variables in `service.env` under the service's T3 home
+Put custom environment variables in `service.env` under the service's Tung Tung Tung Code home
 directory, normally `~/.t3/service.env`. This file survives service installation
 and updates. For example:
 
@@ -72,7 +72,7 @@ For a service installed before env-file support, run `t3 service install` once
 with an up-to-date CLI.
 A missing file is ignored; other read failures stop service startup.
 If the file contains credentials, restrict access to that file with `chmod 600`
-(for the default T3 home, `chmod 600 ~/.t3/service.env`).
+(for the default Tung Tung Tung Code home, `chmod 600 ~/.t3/service.env`).
 
 ## Platform support
 
@@ -87,8 +87,8 @@ service is still installed and will start at the next login.
 
 Windows background services are not supported.
 
-T3 Connect can offer service installation during setup, but the two are managed
-separately. Signing out of T3 Connect does not stop or uninstall the service.
+Sahur Connect can offer service installation during setup, but the two are managed
+separately. Signing out of Sahur Connect does not stop or uninstall the service.
 
 ## Troubleshooting
 
@@ -127,7 +127,7 @@ Downloads, it may need Full Disk Access for the `t3` executable listed in
 `ProgramArguments` in
 `~/Library/LaunchAgents/com.t3tools.t3code.service.plist`.
 
-For failures after signing in to T3 Connect, see
+For failures after signing in to Sahur Connect, see
 [connection troubleshooting](./t3-connect-troubleshooting.md).
 
 ## Reclaim database space

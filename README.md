@@ -2,7 +2,7 @@
 
 **Good code. Great aura. All wood.**
 
-A fully Sahur-themed community fork of [T3 Code](https://github.com/pingdotgg/t3code): warm timber palettes, custom wooden-guardian branding, a redesigned website, and a coding-agent workspace that takes everything seriously except itself.
+A fully Sahur-themed community fork of [T3 Code](https://github.com/pingdotgg/t3code): warm timber palettes, custom wooden-guardian branding, the original landing-page layout with a Sahur makeover, and a coding-agent workspace that takes everything seriously except itself.
 
 ![Tung Tung Tung Sahur](assets/sahur-mark.svg)
 
@@ -26,7 +26,7 @@ Authenticate at least one supported coding-agent CLI first. Bring your own Claud
 - Warm light and dark wood palettes across web, desktop, and mobile.
 - Original wooden guardian, Sahur wordmark, desktop icons, mobile splash screens, favicons, and share artwork.
 - Projects, agent threads, terminals, diffs, and checkpoints from the upstream foundation.
-- An optional drum room with **17 discoveries**, local progress, and an explicit sound toggle.
+- An optional drum room with **20 discoveries**, local progress, and an explicit sound toggle.
 - A separate Astro website with original Sahur artwork and **six website secrets**.
 - A hidden Village OS 95 desktop. Find the suspicious clock in the website footer.
 
@@ -73,5 +73,7 @@ Icons are generated from `assets/sahur-mark.svg`; see [the artwork guide](assets
 ## Roots, not impersonation
 
 This is an independent community fork, not an official T3 product. The upstream maintainers did not endorse this branding or its lore. Original copyright, [license](LICENSE), and third-party notices remain intact. Existing upstream service policies apply to their services, not to a new service operated by this fork.
+
+**Sahur Connect** is this fork's display name for the existing T3 Connect integration, not a separately operated service. Accounts, hosted endpoints, and service policies remain upstream-owned. Compatibility names such as `t3`, `T3CODE_*`, `t3code://`, `@t3tools/*`, installer filenames, and existing data directories are intentional; they are not unfinished branding.
 
 Code quietly. Carry a big stick.

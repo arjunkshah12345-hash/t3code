@@ -68,20 +68,21 @@ describe("classifyReachability", () => {
 });
 
 describe("T3 Connect troubleshooting links", () => {
-  it("each section names a heading in the user guide", () => {
+  it("each section names an anchor in the user guide", () => {
     const guide = NodeFS.readFileSync(
       new URL("../../../../docs/user/t3-connect-troubleshooting.md", import.meta.url),
       "utf8",
     );
     // GitHub's heading anchors: lowercase, drop punctuation, spaces become hyphens.
-    const anchors = new Set(
-      [...guide.matchAll(/^#{2,3} (.+)$/gm)].map(([, heading]) =>
+    const anchors = new Set([
+      ...[...guide.matchAll(/^#{2,3} (.+)$/gm)].map(([, heading]) =>
         heading!
           .toLowerCase()
           .replace(/[^\p{L}\p{N} _-]/gu, "")
           .replace(/ /g, "-"),
       ),
-    );
+      ...[...guide.matchAll(/^<a id="([^"]+)"><\/a>$/gm)].map(([, anchor]) => anchor!),
+    ]);
     for (const section of T3_CONNECT_TROUBLESHOOTING_SECTIONS) {
       expect(anchors, section).toContain(section);
     }

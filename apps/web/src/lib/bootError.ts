@@ -1,8 +1,8 @@
 import type { DesktopBridge, DesktopUpdateState } from "@t3tools/contracts";
+import { FORK_REPOSITORY_URL, FORK_SOURCE_SETUP_URL } from "../brandingLinks";
 
 const FALLBACK_TRIAGE_COMMAND = "npx t3 triage";
-const DOWNLOAD_URL = "https://t3.codes/download";
-const ISSUE_URL = "https://github.com/pingdotgg/t3code/issues/new";
+const ISSUE_URL = `${FORK_REPOSITORY_URL}/issues/new`;
 const LAST_FAILURE_KEY = "t3code:boot-failed-at";
 const REPEAT_FAILURE_MS = 5 * 60_000;
 const MAX_CAUSES = 3;
@@ -350,19 +350,11 @@ export function showBootError(error: unknown) {
   issue.searchParams.set("environment", `${environment.surface}, ${environment.platform}`);
   const link = (href: string, textContent: string) =>
     element("a", { href, textContent, target: "_blank", rel: "noreferrer" });
-  const nightly = environment.channel === "nightly";
 
   const more = element("details", { open: isRepeatFailure(Date.now()) }, [
     element("summary", { textContent: "More options if it keeps failing" }),
     ...(bridge
-      ? [
-          link(
-            nightly ? `${DOWNLOAD_URL}?channel=nightly` : DOWNLOAD_URL,
-            nightly
-              ? "Download and reinstall the latest nightly build"
-              : "Download and reinstall Tung Tung Tung Code",
-          ),
-        ]
+      ? [link(FORK_SOURCE_SETUP_URL, "Build and reinstall Tung Tung Tung Code from source")]
       : []),
     element("div", {}, [
       element("p", {

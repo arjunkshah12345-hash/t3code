@@ -25,7 +25,7 @@ Yes.
 
 ## How much does Tung Tung Tung Code cost?
 
-Nothing. There's no way to pay us to use Tung Tung Tung Code. You bring your own sub. It is free and open source (MIT). You still pay your provider like you already do. T3 Connect is free too, for now. Every account can connect up to 3 machines running Tung Tung Tung Code. Phones and browsers that connect to them do not count. We don't want to charge for this, but if the bill gets unacceptable we may have to change course. If you hit limits or have issues, you can always fork it, self host, or use Tailscale. [Install](./install.md)
+Tung Tung Tung Code is free and open source (MIT). You bring your own provider subscription. Sahur Connect uses the upstream T3 Connect service, not infrastructure operated by this fork. Upstream's documented policy allows up to 3 host machines per account, excluding connecting phones and browsers; pricing and limits are controlled by upstream and may change. Direct pairing and Tailscale are alternatives. [Install](./install.md) · [Remote access](./remote-access.md#sahur-connect)
 
 ## Why is my Claude 5-hour limit draining so fast?
 
@@ -33,21 +33,19 @@ Tung Tung Tung Code drives Claude through Anthropic's Agent SDK. I confirmed it'
 
 ## How do I use Tung Tung Tung Code remotely?
 
-Your agents run wherever Tung Tung Tung Code runs: your desktop, a server, a VPS. You connect to it from anywhere. I do this constantly. Less than 5% of my prompts run on my laptop. Run `npx t3 connect` on that machine and you get really good remote support. T3 Connect is the easy path. LAN pairing and Tailscale work too, and [app.t3.codes](https://app.t3.codes) is the web client. [Remote access](./remote-access.md)
+Your agents run wherever Tung Tung Tung Code runs: your desktop, a server, a VPS. You connect to it from anywhere. I do this constantly. Less than 5% of my prompts run on my laptop. Run `npx t3 connect` on that machine and you get really good remote support. Sahur Connect is the easy path. LAN pairing and Tailscale work too, and [app.t3.codes](https://app.t3.codes) is the web client. [Remote access](./remote-access.md)
 
 ## How do I use Tung Tung Tung Code on my phone?
 
-Get the [iOS](https://apps.apple.com/us/app/t3-code-remote-claude-more/id6787819824) or [Android](https://play.google.com/store/apps/details?id=com.t3tools.t3code) app, then connect it to your computer with T3 Connect or a pairing link. The phone is a remote. Your computer does the work and needs to stay on. [Mobile setup](./install.md#mobile-app) · [Remote access](./remote-access.md)
+The upstream [iOS](https://apps.apple.com/us/app/t3-code-remote-claude-more/id6787819824) and [Android](https://play.google.com/store/apps/details?id=com.t3tools.t3code) apps are T3 Code releases, not releases of this fork. Connect a compatible client to your computer with Sahur Connect or a pairing link. The phone is a remote. Your computer does the work and needs to stay on. [Mobile setup](./install.md#mobile-app) · [Remote access](./remote-access.md)
 
-## Why does T3 Connect keep disconnecting?
+## Why does Sahur Connect keep disconnecting?
 
-T3 Connect is our built-in alternative to Tailscale for remote connections. If it keeps dropping, open **Settings > Connections**, find the machine, and select **Details**. The first part marked as failed is the cause. I will not be disappointed if you set up Tailscale as a fallback (I do this personally). [T3 Connect troubleshooting](./t3-connect-troubleshooting.md)
+Sahur Connect is our built-in alternative to Tailscale for remote connections. If it keeps dropping, open **Settings > Connections**, find the machine, and select **Details**. The first part marked as failed is the cause. I will not be disappointed if you set up Tailscale as a fallback (I do this personally). [Sahur Connect troubleshooting](./t3-connect-troubleshooting.md)
 
 ## Will I get banned for using my subscription?
 
-No. We work with all of the labs and Tung Tung Tung Code is within the TOS of Claude Code, Codex, and Google Antigravity. We worked directly with [SpaceXAI](https://x.com/SpaceXSI/status/2070195830192320600) to collaborate on the Grok Build and Cursor integrations. Everything else uses official ACP bindings.
-
-If it works in Tung Tung Tung Code, you can trust it is safe.
+The upstream T3 Code maintainers describe working with the labs, including [SpaceXAI](https://x.com/SpaceXSI/status/2070195830192320600) on the Grok Build and Cursor integrations, and using official ACP bindings for other integrations. Those relationships belong to upstream, not this fork. Check your provider's terms; this fork cannot guarantee account eligibility or protection from bans.
 
 ## Can I add a bunch of accounts for one provider?
 
@@ -63,9 +61,9 @@ Yes. Add another provider instance in Settings and give it its own keys and endp
 
 No. Tung Tung Tung Code is a serious developer tool. Locally runnable models are not capable of meaningful engineering work.
 
-## Does my code go to T3 servers?
+## Does my code go to Tung Tung Tung Code servers?
 
-No. Your code and prompts go from your machine to your provider (Anthropic, OpenAI, etc.), not to us. With T3 Connect, traffic rides a Cloudflare tunnel (`cloudflared` on your machine). Our relay sets up the link. It does not proxy your HTTP or WebSocket sessions. Tung Tung Tung Code does send basic product usage events (provider, model, token totals, that kind of thing). No prompts, no file contents. That is the same on Tailscale, LAN, or T3 Connect. Set `T3CODE_TELEMETRY_ENABLED=false` if you want it off. [Product usage data](./telemetry.md)
+Your code and prompts go from your machine to your provider (Anthropic, OpenAI, etc.). With Sahur Connect, traffic rides a Cloudflare tunnel (`cloudflared` on your machine). The upstream relay sets up the link; it does not proxy your HTTP or WebSocket sessions. Tung Tung Tung Code retains upstream product usage reporting (provider, model, token totals, not prompts or file contents) to upstream's endpoint, whether you use Tailscale, LAN, or Sahur Connect. Set `T3CODE_TELEMETRY_ENABLED=false` if you want it off. [Product usage data](./telemetry.md)
 
 ## Worktrees are eating my disk. How do I clean them up?
 

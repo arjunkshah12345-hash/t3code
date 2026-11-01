@@ -195,14 +195,14 @@ export function useRemoteConnections() {
       if (environment.isRelayManaged) {
         Dialog.alert(
           "Remove from this device?",
-          `Forget ${environment.environmentLabel} and its cached threads on this device.\n\nIt stays on your T3 Connect account and keeps its host space. Deregister it under T3 Account → T3 Connect to free it.`,
+          `Forget ${environment.environmentLabel} and its cached threads on this device.\n\nIt stays on your Sahur Connect account and keeps its host space. Deregister it under Sahur Account → Sahur Connect to free it.`,
           [
             { text: "Cancel", style: "cancel" },
             // SettingsAuth renders nothing in builds without cloud config.
             ...(hasCloudPublicConfig()
               ? [
                   {
-                    text: "Open T3 Account",
+                    text: "Open Sahur Account",
                     onPress: () => navigation.navigate("SettingsAuth"),
                   },
                 ]

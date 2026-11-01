@@ -24,8 +24,7 @@ export function StandalonePageHeader({
     <>
       <div className="flex items-baseline justify-between gap-3 text-muted-foreground">
         <span className="flex items-baseline gap-1.5" role="img" aria-label="Tung Tung Tung Code">
-          <T3Wordmark className="h-3 w-auto shrink-0 text-foreground" aria-hidden />
-          <span className="text-lg font-medium tracking-tight">Code</span>
+          <T3Wordmark className="h-7 w-auto shrink-0 text-foreground" aria-hidden />
         </span>
         {context ? <span className="text-sm">{context}</span> : null}
       </div>

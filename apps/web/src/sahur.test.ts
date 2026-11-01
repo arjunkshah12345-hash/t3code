@@ -34,6 +34,9 @@ describe("Sahur discoveries", () => {
     ["moonwalk".split(""), "moonwalk"],
     ["village".split(""), "village"],
     ["wakeup".split(""), "wakeup"],
+    ["BONK".split(""), "bonk"],
+    ["timber".split(""), "timber"],
+    ["logoff".split(""), "logoff"],
   ] as const)("recognizes the secret sequence %s", (sequence, egg) => {
     let state: ReturnType<typeof advanceSahurSequence> = { buffer: [], egg: null };
     for (const key of sequence) state = advanceSahurSequence(state.buffer, key);
@@ -92,8 +95,14 @@ describe("Sahur discoveries", () => {
   it("preserves old progress while accepting newly discovered village legends", () => {
     expect(
       readSahurProgress(
-        JSON.stringify({ discoveries: ["knock", "moonwalk", "century", "lunar"], sound: true }),
+        JSON.stringify({
+          discoveries: ["knock", "moonwalk", "century", "lunar", "bonk", "timber", "logoff"],
+          sound: true,
+        }),
       ),
-    ).toEqual({ discoveries: ["knock", "moonwalk", "century", "lunar"], sound: true });
+    ).toEqual({
+      discoveries: ["knock", "moonwalk", "century", "lunar", "bonk", "timber", "logoff"],
+      sound: true,
+    });
   });
 });

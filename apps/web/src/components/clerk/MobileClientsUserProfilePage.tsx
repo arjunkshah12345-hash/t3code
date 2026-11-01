@@ -94,7 +94,7 @@ function EmptyMobileClients() {
       <EmptyHeader>
         <EmptyTitle>No mobile clients</EmptyTitle>
         <EmptyDescription>
-          Install Tung Tung Tung Code on your phone and sign in to T3 Connect to get push
+          Install Tung Tung Tung Code on your phone and sign in to Sahur Connect to get push
           notifications and Live Activities.
         </EmptyDescription>
       </EmptyHeader>

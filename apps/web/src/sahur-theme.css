@@ -15,6 +15,20 @@
   --sahur-art-13: #291d15;
 }
 
+html:not([data-theme-id]) .sidebar-stage-backdrop {
+  --stage-art-top: #c78a43;
+  --stage-art-mid: #805025;
+  --stage-art-bottom: #3e2818;
+  --stage-art-highlight: #fff0cb;
+  --stage-art-secondary: #daa55d;
+  --stage-art-tertiary: #a56d31;
+  --stage-art-line: #f6ddaf;
+  --stage-art-celeste-highlight: #fff4da;
+  --stage-art-celeste-secondary: #e8bc79;
+  --stage-art-violet-highlight: #e5bd8e;
+  --stage-art-grid-line: #f3d6a5;
+}
+
 html:not([data-theme-id]) {
   --background: #fcf7ee;
   --app-chrome-background: #fcf7ee;

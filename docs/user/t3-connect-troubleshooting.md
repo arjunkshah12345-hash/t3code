@@ -1,9 +1,9 @@
-# T3 Connect troubleshooting
+# Sahur Connect troubleshooting
 
-A T3 Connect connection goes through four parts, in this order:
+A Sahur Connect connection goes through four parts, in this order:
 
-1. **This device** reaches T3 Connect over the internet.
-2. **T3 Connect** checks your sign-in and the host's link.
+1. **This device** reaches Sahur Connect over the internet.
+2. **Sahur Connect** checks your sign-in and the host's link.
 3. **The host's tunnel** (cloudflared on the host) carries the request to the host.
 4. **Tung Tung Tung Code on the host** answers.
 
@@ -12,14 +12,14 @@ and select **Details**. The first part marked as failed is the cause. Find its
 section below.
 
 To see the host's side, run `t3 connect status` on the host, or open
-**Settings > Sharing & access** on the host. Both check the host's T3 Connect
+**Settings > Sharing & access** on the host. Both check the host's Sahur Connect
 address from the host, and say why it fails. `t3 connect` runs the same check
 when it finishes setup. This check cannot test another device's network. For a
 problem on one device, use **Details** on that device.
 
 ## The host's tunnel is offline
 
-T3 Connect could not reach the host's tunnel. This means one of these:
+Sahur Connect could not reach the host's tunnel. This means one of these:
 
 - The host is asleep, turned off, or offline.
 - Tung Tung Tung Code is not running on the host.
@@ -30,7 +30,7 @@ Fix:
 
 1. Make sure the host is awake and Tung Tung Tung Code runs on it.
 2. On the host, run `t3 connect status`. It names the problem on the host's side.
-3. If the host was offline for a long time, T3 Connect removes its tunnel. Start
+3. If the host was offline for a long time, Sahur Connect removes its tunnel. Start
    Tung Tung Tung Code on the host and update it to the latest version. It gets a new tunnel.
 
 ## Port 7844 is blocked on the host
@@ -50,10 +50,12 @@ Common causes:
   to be allowed, or use a direct route instead (see below).
 - **A firewall or strict network.** Allow outbound TCP and UDP port 7844.
 
-If you cannot unblock the port, you can connect without T3 Connect. When the
+If you cannot unblock the port, you can connect without Sahur Connect. When the
 host and this device are on the same Tailscale network, add the host's
 Tailscale address as a direct route. See
 [Reach one machine several ways](./remote-access.md#reach-one-machine-several-ways).
+
+<a id="the-tunnel-works-but-t3-code-does-not-answer"></a>
 
 ## The tunnel works, but Tung Tung Tung Code does not answer
 
@@ -68,9 +70,11 @@ The host's tunnel is up, but it cannot reach Tung Tung Tung Code on the host. Co
 Fix: restart Tung Tung Tung Code on the host. For the background service, run
 `t3 service restart`. Then run `t3 connect status` on the host.
 
-## The T3 Connect address does not resolve or answer
+<a id="the-t3-connect-address-does-not-resolve-or-answer"></a>
 
-The host's T3 Connect address did not resolve, refused the connection, failed a
+## The Sahur Connect address does not resolve or answer
+
+The host's Sahur Connect address did not resolve, refused the connection, failed a
 secure (TLS) connection, or did not answer in time.
 
 Fix:
@@ -79,19 +83,21 @@ Fix:
 2. On the host, run `t3 connect status`.
 3. If the check fails only on the host, check the host's DNS, VPN, or proxy.
 
-## This device can't reach T3 Connect
+<a id="this-device-cant-reach-t3-connect"></a>
+
+## This device can't reach Sahur Connect
 
 The problem is on this device's network, not on the host. This device could
-not reach T3 Connect, or it reached T3 Connect but not the host's tunnel
+not reach Sahur Connect, or it reached Sahur Connect but not the host's tunnel
 address.
 
 Fix:
 
 1. Check this device's internet connection. On a captive or dead Wi-Fi network,
    the device can look online but cannot reach anything.
-2. A VPN, firewall, ad blocker, or DNS filter on this device can block T3
+2. A VPN, firewall, ad blocker, or DNS filter on this device can block Sahur
    Connect. Turn it off for a moment to test.
-3. On iPhone, Connectivity Assist in the Wi-Fi settings can break T3 Connect.
+3. On iPhone, Connectivity Assist in the Wi-Fi settings can break Sahur Connect.
    Turn it off to test.
 4. Try another network, or add a direct route to the host, such as its
    Tailscale address. See
@@ -99,33 +105,37 @@ Fix:
 
 ## Sign-in, account, or link problems
 
-T3 Connect does not have an active link between your account and the host.
+Sahur Connect does not have an active link between your account and the host.
 
-- **The host is linked to a different account.** Sign in to the same T3 Connect
+- **The host is linked to a different account.** Sign in to the same Sahur Connect
   account on this device and on the host. On the host, run `t3 connect logout`,
   then `t3 connect`.
-- **T3 Connect is off on the host, or the host only publishes agent activity.**
-  On the host, open **Settings > Sharing & access** and turn **T3 Connect** on, or
+- **Sahur Connect is off on the host, or the host only publishes agent activity.**
+  On the host, open **Settings > Sharing & access** and turn **Sahur Connect** on, or
   run `t3 connect`.
 - **The host was linked, but the server did not apply the link yet.** Run
   `t3 service restart` on the host, or restart `t3 serve`.
 - **This device's sign-in expired, or the host no longer accepts this
-  device.** Sign out of T3 Connect and sign in again.
+  device.** Sign out of Sahur Connect and sign in again.
 - **Your account reached its tunnel limit.** Remove an environment you do not
-  use from your T3 account's T3 Connect page, then restart Tung Tung Tung Code on the host.
+  use from your Tung Tung Tung Code account's Sahur Connect page, then restart Tung Tung Tung Code on the host.
 
 ## The clock is off
 
-T3 Connect signs requests with short-lived proofs. When the clock on this
-device or the host is a few minutes wrong, T3 Connect rejects them. Turn on
+Sahur Connect signs requests with short-lived proofs. When the clock on this
+device or the host is a few minutes wrong, Sahur Connect rejects them. Turn on
 automatic date and time on both devices, then retry.
+
+<a id="the-host-runs-an-older-t3-code"></a>
 
 ## The host runs an older Tung Tung Tung Code
 
 This app needs a newer Tung Tung Tung Code on the host. Update Tung Tung Tung Code on the host. See
 [Updating Tung Tung Tung Code](./updating.md).
 
-## T3 Connect returned an error
+<a id="t3-connect-returned-an-error"></a>
+
+## Sahur Connect returned an error
 
 | Error                                                     | Fix                                                                                                                                         |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |

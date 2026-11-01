@@ -1,6 +1,8 @@
 import type { ColorValue } from "react-native";
-import Svg, { Circle, Path, Rect, Text as SvgText } from "react-native-svg";
+import Svg, { Image, Text as SvgText } from "react-native-svg";
 import { withUniwind } from "uniwind";
+
+import { T3_CODE_BRAND_MARK_SOURCE } from "./brandAssets";
 
 const ThemedText = withUniwind(SvgText);
 
@@ -11,18 +13,12 @@ export function T3Wordmark(props: {
 }) {
   return (
     <Svg
-      accessibilityLabel="Tung Tung Tung Sahur"
+      accessibilityLabel="Tung Tung Tung Code"
       height={props.height}
       width={props.height * 4.5}
       viewBox="0 0 270 60"
     >
-      <Rect x="2" y="6" width="30" height="48" rx="13" fill="#b87939" />
-      <Path d="M9 12v13m7-16v9m9 13v15M10 41v7" stroke="#75431f" strokeWidth="2" />
-      <Circle cx="12" cy="27" r="3" fill="#fff4d9" />
-      <Circle cx="23" cy="27" r="3" fill="#fff4d9" />
-      <Circle cx="13" cy="27" r="1.5" fill="#291d15" />
-      <Circle cx="22" cy="27" r="1.5" fill="#291d15" />
-      <Path d="M12 35q5 6 11 0" fill="none" stroke="#291d15" strokeWidth="2" />
+      <Image href={T3_CODE_BRAND_MARK_SOURCE} x="0" y="10" width="40" height="40" />
       <ThemedText
         x="43"
         y="29"
@@ -44,7 +40,7 @@ export function T3Wordmark(props: {
         colorClassName={props.colorClassName}
         fill="currentColor"
       >
-        SAHUR
+        CODE
       </ThemedText>
     </Svg>
   );

@@ -284,7 +284,10 @@ export const makeCodexInstallation = Effect.fn("makeCodexInstallation")(function
       return executable;
     },
     Effect.mapError(
-      wrapFailure("resolve", "Codex is not installed in T3 Code. Install it to continue."),
+      wrapFailure(
+        "resolve",
+        "Codex is not installed in Tung Tung Tung Code. Install it to continue.",
+      ),
     ),
   );
   const acquire = Effect.fn("CodexInstallation.acquire")(function* () {

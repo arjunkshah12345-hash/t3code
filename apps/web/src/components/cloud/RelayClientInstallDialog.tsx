@@ -69,8 +69,8 @@ export function RelayClientInstallDialog() {
           </DialogTitle>
           <DialogDescription>
             {isInstalling
-              ? "Tung Tung Tung Code is preparing this environment for secure access through T3 Connect."
-              : "Tung Tung Tung Code needs the relay client to make this environment available through T3 Connect."}
+              ? "Tung Tung Tung Code is preparing this environment for secure access through Sahur Connect."
+              : "Tung Tung Tung Code needs the relay client to make this environment available through Sahur Connect."}
           </DialogDescription>
         </DialogHeader>
         <DialogPanel scrollFade={false}>

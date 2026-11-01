@@ -5,8 +5,25 @@ import sharp from "sharp";
 import { encodePngIco, WINDOWS_ICON_SIZES } from "./lib/icon-export.ts";
 
 const root = NodeURL.fileURLToPath(new URL("../", import.meta.url));
-const source = await NodeFSP.readFile(NodePath.resolve(root, "assets/sahur-mark.svg"));
-const socialSource = await NodeFSP.readFile(NodePath.resolve(root, "assets/sahur-social.svg"));
+const character = await NodeFSP.readFile(NodePath.resolve(root, "assets/sahur-character.webp"));
+const portrait = await sharp(character)
+  .resize(512, 512, { fit: "cover", position: "north" })
+  .png()
+  .toBuffer();
+const source = Buffer.from(
+  `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="128" height="128" viewBox="0 0 128 128"><defs><clipPath id="portrait"><rect width="128" height="128" rx="24"/></clipPath></defs><image width="128" height="128" clip-path="url(#portrait)" xlink:href="data:image/png;base64,${portrait.toString("base64")}"/></svg>`,
+);
+const socialTemplate = await NodeFSP.readFile(
+  NodePath.resolve(root, "assets/sahur-social.svg"),
+  "utf8",
+);
+const socialPortrait = await sharp(character).resize(540).png().toBuffer();
+const socialSource = Buffer.from(
+  socialTemplate.replace(
+    "sahur-character.webp",
+    `data:image/png;base64,${socialPortrait.toString("base64")}`,
+  ),
+);
 const png = async (size: number) => sharp(source).resize(size, size).png().toBuffer();
 const checkOnly = process.argv.includes("--check");
 const save = async (path: string, contents: Buffer) => {
@@ -28,6 +45,10 @@ const ico = encodePngIco(
 const favicon = encodePngIco(
   await Promise.all([16, 32, 48].map(async (size) => ({ size, contents: await png(size) }))),
 );
+
+await save("assets/sahur-mark.svg", source);
+await save("apps/marketing/public/tung-tung-tung-sahur.webp", character);
+await save("apps/marketing/public/sahur-guardian.svg", source);
 
 for (const [directory, prefix] of [
   ["dev", "blueprint"],
@@ -75,9 +96,7 @@ await save(
 for (const directory of ["apps/web/public", "apps/marketing/public"])
   await save(`${directory}/sahur.svg`, source);
 
-const transparentMark = Buffer.from(
-  source.toString().replace(/  <rect (?:width="128"|x="8")[^\n]+\n/g, ""),
-);
+const transparentMark = source;
 const foreground = await sharp({
   create: { width: 432, height: 432, channels: 4, background: "#00000000" },
 })

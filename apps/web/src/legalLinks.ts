@@ -1,1 +1,1 @@
-export const PRIVACY_POLICY_URL = "https://t3.codes/privacy-policy";
+export { FORK_PRIVACY_URL as PRIVACY_POLICY_URL } from "./brandingLinks";

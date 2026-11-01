@@ -1214,7 +1214,7 @@ export function ConnectionsSettings({ view }: { readonly view: "environments" | 
                 <AlertDialogDescription>
                   {pendingDesktopServerExposureMode === "network-accessible"
                     ? "Let your other devices connect to Tung Tung Tung Code over the network. Pair devices to give them access. Tung Tung Tung Code will restart."
-                    : "Devices connected over your local network will disconnect. Existing tunnels, such as T3 Connect or Tailscale HTTPS, keep working. Tung Tung Tung Code will restart."}
+                    : "Devices connected over your local network will disconnect. Existing tunnels, such as Sahur Connect or Tailscale HTTPS, keep working. Tung Tung Tung Code will restart."}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

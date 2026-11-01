@@ -35,6 +35,18 @@ export const SAHUR_EGGS = {
     hint: "A century of knocks. Yes, really.",
   },
   lunar: { title: "The moon has filed a noise complaint.", hint: "Tap the moon 33 times." },
+  bonk: {
+    title: "Bonk. Your bugs have been put on notice.",
+    hint: "Type bonk outside a text field.",
+  },
+  timber: {
+    title: "TIMBER! That was the technical debt falling.",
+    hint: "Type timber. Stand clear.",
+  },
+  logoff: {
+    title: "You can log off. The log cannot.",
+    hint: "Type logoff. The guardian stays on duty.",
+  },
 } as const;
 
 export type SahurEgg = keyof typeof SAHUR_EGGS;
@@ -65,7 +77,17 @@ export function readSahurProgress(raw: string | null): SahurProgress {
 export function advanceSahurSequence(buffer: readonly string[], key: string) {
   const next = [...buffer, key.length === 1 ? key.toLowerCase() : key].slice(-12);
   const joined = next.join("");
-  const typedSecrets = ["moonwalk", "village", "wakeup", "bedug", "wood", "aura"] as const;
+  const typedSecrets = [
+    "moonwalk",
+    "village",
+    "wakeup",
+    "bedug",
+    "wood",
+    "aura",
+    "bonk",
+    "timber",
+    "logoff",
+  ] as const;
   const egg: SahurEgg | null =
     next.slice(-10).join(" ") === KONAMI_SEQUENCE.join(" ")
       ? "konami"

@@ -253,9 +253,9 @@ export const offerServiceDuringOnboarding = Effect.gen(function* () {
         ? "The installed Tung Tung Tung Code service needs an update or repair. Update it now?"
         : platform === "darwin"
           ? "Run Tung Tung Tung Code in the background whenever you log in to this Mac? " +
-            "It stays reachable through T3 Connect while you are logged in."
+            "It stays reachable through Sahur Connect while you are logged in."
           : "Run Tung Tung Tung Code in the background whenever this machine boots? " +
-            "It stays reachable through T3 Connect even after you log out.",
+            "It stays reachable through Sahur Connect even after you log out.",
       initial: true,
     }),
   );
