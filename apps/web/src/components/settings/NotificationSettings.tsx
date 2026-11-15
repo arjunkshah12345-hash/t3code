@@ -2,11 +2,17 @@ import { settlePromise } from "@t3tools/client-runtime/state/runtime";
 import { useState } from "react";
 
 import {
+  ALERT_SOUND_LABELS,
+  type AlertSound,
   hasDesktopNotifications,
   hasNotificationSound,
   NOTIFICATION_MODE_LABELS,
+  previewAlertSound,
+  readAlertSound,
   unlockNotificationAudio,
+  writeAlertSound,
 } from "../../threadNotifications";
+import { Button } from "../ui/button";
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "../ui/select";
 import { SettingsRow } from "./settingsLayout";
 import { searchableSetting } from "./settingsSearch";
@@ -76,6 +82,50 @@ export function NotificationSettings() {
             ))}
           </SelectPopup>
         </Select>
+      }
+    />
+  );
+}
+
+export function AlertSoundSettings() {
+  const mode = useScopedSettings((settings) => settings.notificationMode);
+  const [sound, setSound] = useState<AlertSound>(readAlertSound);
+  if (!hasNotificationSound(mode)) return null;
+
+  return (
+    <SettingsRow
+      {...searchableSetting("alert-sound")}
+      description={
+        sound === "knock"
+          ? "One knock when a thread finishes. Tung, tung, TUNG when one needs your input or approval."
+          : "The classic chime for finished threads and requests for input."
+      }
+      control={
+        <div className="flex w-full items-center gap-2 sm:w-auto">
+          <Select
+            value={sound}
+            onValueChange={(value) => {
+              if (value !== "knock" && value !== "chime") return;
+              writeAlertSound(value);
+              setSound(value);
+              previewAlertSound("input");
+            }}
+          >
+            <SelectTrigger size="sm" className="w-full sm:w-40" aria-label="Alert sound">
+              <SelectValue>{ALERT_SOUND_LABELS[sound]}</SelectValue>
+            </SelectTrigger>
+            <SelectPopup align="end" alignItemWithTrigger={false}>
+              {Object.entries(ALERT_SOUND_LABELS).map(([value, label]) => (
+                <SelectItem key={value} hideIndicator value={value}>
+                  {label}
+                </SelectItem>
+              ))}
+            </SelectPopup>
+          </Select>
+          <Button size="sm" variant="outline" onClick={() => previewAlertSound("input")}>
+            Play
+          </Button>
+        </div>
       }
     />
   );

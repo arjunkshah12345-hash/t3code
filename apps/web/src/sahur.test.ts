@@ -37,6 +37,9 @@ describe("Sahur discoveries", () => {
     ["BONK".split(""), "bonk"],
     ["timber".split(""), "timber"],
     ["logoff".split(""), "logoff"],
+    ["kentongan".split(""), "kentongan"],
+    ["IMSAK".split(""), "imsak"],
+    ["ngabuburit".split(""), "ngabuburit"],
   ] as const)("recognizes the secret sequence %s", (sequence, egg) => {
     let state: ReturnType<typeof advanceSahurSequence> = { buffer: [], egg: null };
     for (const key of sequence) state = advanceSahurSequence(state.buffer, key);

@@ -43,6 +43,18 @@ export const SAHUR_EGGS = {
     title: "TIMBER! That was the technical debt falling.",
     hint: "Type timber. Stand clear.",
   },
+  kentongan: {
+    title: "Kentongan online. The neighborhood watch is now a code review.",
+    hint: "Type kentongan, the original wooden alarm.",
+  },
+  imsak: {
+    title: "Imsak in ten minutes. Ship it or snooze it.",
+    hint: "Type imsak when the deadline is close.",
+  },
+  ngabuburit: {
+    title: "Killing time until sunset. Your agents are not.",
+    hint: "Type ngabuburit while you wait.",
+  },
   logoff: {
     title: "You can log off. The log cannot.",
     hint: "Type logoff. The guardian stays on duty.",
@@ -87,6 +99,9 @@ export function advanceSahurSequence(buffer: readonly string[], key: string) {
     "bonk",
     "timber",
     "logoff",
+    "kentongan",
+    "imsak",
+    "ngabuburit",
   ] as const;
   const egg: SahurEgg | null =
     next.slice(-10).join(" ") === KONAMI_SEQUENCE.join(" ")
