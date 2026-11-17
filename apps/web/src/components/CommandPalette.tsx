@@ -63,6 +63,8 @@ import {
   MessageSquareDashedIcon,
   LinkIcon,
   MessageSquareIcon,
+  NewspaperIcon,
+  FileDownIcon,
   PaletteIcon,
   RotateCcwIcon,
   SettingsIcon,
@@ -101,7 +103,17 @@ import { filesystemEnvironment, useFilesystemReadAccess } from "../state/filesys
 import { projectEnvironment } from "../state/projects";
 import { useEnvironmentQuery } from "../state/query";
 import { serverEnvironment } from "../state/server";
-import { threadEnvironment } from "../state/threads";
+import { environmentThreadDetails, threadEnvironment } from "../state/threads";
+import { appAtomRegistry } from "../rpc/atomRegistry";
+import {
+  buildVillageReport,
+  messagesFromTurnItems,
+  threadMarkdownFilename,
+  threadToMarkdown,
+  villageReportStatus,
+} from "../threadExport";
+import { downloadPlanAsTextFile } from "../proposedPlan";
+import { resolveSidebarThreadStatus } from "./Sidebar.logic";
 import { readEnvironmentScope, useEnvironmentScope } from "~/state/session";
 import { sourceControlEnvironment } from "../state/sourceControl";
 import { useAtomCommand } from "../state/use-atom-command";
@@ -1278,6 +1290,94 @@ function OpenCommandPaletteDialog(props: {
       run: copyActiveThreadReference,
     });
   }
+
+  const copyMarkdown = async (markdown: string, title: string, description: string) => {
+    try {
+      if (!(await writeTextToClipboard(markdown, "markdown"))) return;
+      toastManager.add({ type: "success", title, description });
+    } catch (error) {
+      console.error(error);
+      toastManager.add(
+        stackedThreadToast({
+          type: "error",
+          title: "Couldn't copy to the clipboard",
+          description: error instanceof Error ? error.message : "An error occurred.",
+        }),
+      );
+    }
+  };
+  const projectTitleFor = (environmentId: EnvironmentId, projectId: string) =>
+    projects.find((project) => project.environmentId === environmentId && project.id === projectId)
+      ?.title ?? "Other";
+
+  if (activeThread) {
+    const exportThread = activeThread;
+    const buildActiveThreadMarkdown = () =>
+      threadToMarkdown({
+        title: exportThread.title,
+        projectName: projectTitleFor(exportThread.environmentId, exportThread.projectId),
+        branch: exportThread.branch,
+        model: exportThread.modelSelection?.model ?? null,
+        messages: messagesFromTurnItems(
+          appAtomRegistry.get(
+            environmentThreadDetails.visibleTurnItemsAtom(
+              scopeThreadRef(exportThread.environmentId, exportThread.id),
+            ),
+          ),
+        ),
+      });
+    actionItems.push({
+      kind: "action",
+      value: "action:copy-thread-markdown",
+      searchTerms: ["copy", "export", "markdown", "md", "share", "conversation", "transcript"],
+      title: "Copy thread as Markdown",
+      icon: <FileDownIcon className={ITEM_ICON_CLASS} />,
+      run: () =>
+        copyMarkdown(
+          buildActiveThreadMarkdown(),
+          "Thread copied as Markdown",
+          "Paste it into a PR, a doc, or a DM.",
+        ),
+    });
+    actionItems.push({
+      kind: "action",
+      value: "action:download-thread-markdown",
+      searchTerms: ["download", "export", "save", "markdown", "md", "file", "transcript"],
+      title: "Download thread as Markdown",
+      icon: <FileDownIcon className={ITEM_ICON_CLASS} />,
+      run: async () => {
+        downloadPlanAsTextFile(
+          threadMarkdownFilename(exportThread.title),
+          buildActiveThreadMarkdown(),
+        );
+      },
+    });
+  }
+
+  actionItems.push({
+    kind: "action",
+    value: "action:village-report",
+    searchTerms: ["village report", "standup", "today", "summary", "daily", "report", "recap"],
+    title: "Village report",
+    description: "Copy today's work as a standup",
+    icon: <NewspaperIcon className={ITEM_ICON_CLASS} />,
+    run: () =>
+      copyMarkdown(
+        buildVillageReport(
+          threads
+            .filter((thread) => thread.archivedAt === null)
+            .map((thread) => ({
+              title: thread.title,
+              projectName: projectTitleFor(thread.environmentId, thread.projectId),
+              model: thread.modelSelection?.model ?? null,
+              status: villageReportStatus(resolveSidebarThreadStatus(thread)),
+              updatedAt: thread.updatedAt,
+            })),
+        ),
+        "Village report copied",
+        "Today's work, grouped by project. Paste it into standup.",
+      ),
+  });
 
   if (
     activeThread !== null &&

@@ -30,4 +30,14 @@ describe("CommandPalette open intents", () => {
     await expect.element(input).toHaveFocus();
     await expect.element(input).toHaveValue("acme");
   });
+
+  it("offers the village report, even with no thread open", async () => {
+    setup();
+    await using _screen = await render(<CommandPalette>{null}</CommandPalette>);
+
+    openCommandPalette({ query: "village" });
+
+    await expect.element(page.getByText("Village report", { exact: true })).toBeVisible();
+    await expect.element(page.getByText("Copy today's work as a standup")).toBeVisible();
+  });
 });

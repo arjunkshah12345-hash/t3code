@@ -473,6 +473,12 @@ export const SETTINGS_SEARCH_ITEMS = [
     searchTerms: ["notification sound alert completion input approval desktop"],
   },
   {
+    id: "alert-sound",
+    title: "Alert sound",
+    to: "/settings/general",
+    searchTerms: ["alert sound knock wooden chime tung sahur notification"],
+  },
+  {
     id: "in-app-notifications",
     title: "In-app notifications",
     to: "/settings/general",
