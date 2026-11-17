@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { sitePath } from "../lib/site";
+---
+<Layout title="Lost in the village | Tung Tung Tung Code" description="This page wandered off before dawn.">
+  <section class="lost wrap">
+    <p class="eyebrow mono">404 / Nobody answered the knock</p>
+    <h1>Tung. Tung.<br /><span>…nothing.</span></h1>
+    <p>This page wandered off before dawn. The village is this way.</p>
+    <a class="btn" href={sitePath("/")}>Back to the village</a>
+  </section>
+</Layout>
+<style>
+  .lost { padding: 180px 0 120px; text-align: center; }
+  h1 { margin: 18px 0 20px; font-size: clamp(56px, 9vw, 110px); line-height: .95; letter-spacing: -.055em; font-weight: 600; }
+  h1 span { color: var(--fg-faint); }
+  p:not(.eyebrow) { color: var(--fg-muted); font-size: 18px; margin-bottom: 30px; }
+</style>

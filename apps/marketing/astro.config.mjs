@@ -1,3 +1,5 @@
+import { fileURLToPath } from "node:url";
+import react from "@astrojs/react";
 import { defineConfig } from "astro/config";
 
 // Astro loads env with an empty prefix, and under `vp run` Vite+'s loadEnv then reports every
@@ -10,6 +12,10 @@ export default defineConfig({
   site: process.env.PAGES_SITE_URL,
   base: process.env.PAGES_BASE_PATH ?? "/",
   trailingSlash: "always",
+  integrations: [react()],
+  vite: {
+    resolve: { alias: { "@": fileURLToPath(new URL("./src", import.meta.url)) } },
+  },
   server: {
     port: Number(process.env.PORT ?? 4173),
   },

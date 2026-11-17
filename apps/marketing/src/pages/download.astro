@@ -1,44 +1,106 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { GITHUB_REPOSITORY_URL, sitePath } from "../lib/site";
-const commands = `git clone ${GITHUB_REPOSITORY_URL}.git tung-tung-tung-code\ncd tung-tung-tung-code\npnpm install\npnpm dev`;
+import { GITHUB_REPOSITORY_URL } from "../lib/site";
+
+const steps = [
+  {
+    title: "Install the toolchain",
+    body: "Use the exact versions pinned in package.json. A version manager such as fnm, nvm or mise makes this one line.",
+    code: "node --version   # v26.12.1\nnpm install --global pnpm@12.14.0",
+  },
+  {
+    title: "Log in to at least one agent",
+    body: "Tung Tung Tung Code drives the agent CLIs you already have. Sign in to any of them in your terminal first: Claude Code, Codex, Cursor, OpenCode, Grok or Antigravity.",
+    code: "claude        # or: codex, cursor-agent, opencode …",
+  },
+  {
+    title: "Clone and install",
+    body: "This pulls the workspace and its dependencies. The first install takes a few minutes.",
+    code: `git clone ${GITHUB_REPOSITORY_URL}.git\ncd tung-tung-tung-code\npnpm install`,
+  },
+  {
+    title: "Wake the village",
+    body: "Start the server and web app, then open the URL it prints. Prefer a native window? Run the desktop app instead.",
+    code: "pnpm dev           # browser\npnpm dev:desktop   # desktop app",
+  },
+];
+
+const troubleshooting = [
+  { q: "pnpm install fails on engines", a: "Your Node version doesn't match. Check node --version against the engines field in package.json and switch versions." },
+  { q: "No agents show up", a: "The app only lists agents whose CLI is installed and logged in. Run the CLI once in a terminal, then reload Settings → Providers." },
+  { q: "I want the original T3 Code", a: "That's at t3.codes. Its installers install upstream T3 Code, not this fork." },
+  { q: "Something else broke", a: "Open an issue with your OS, Node version and the error. Please don't paste API keys or tokens." },
+];
 ---
-<Layout title="Enter the village | Tung Tung Tung Code" description="Run the Sahur-themed coding-agent workspace from source. No misleading upstream installers.">
-  <section class="get-code">
-    <p class="eyebrow">THE FIRST KNOCK / GET STARTED</p>
-    <h1>Your village.<br /><em>Your machine.</em></h1>
-    <p class="intro">Tung Tung Tung Code is currently a source-build fork. There are no official Sahur desktop binaries or app-store releases yet. The code is the download.</p>
-    <div class="source-panel"><div class="source-heading"><span>01 / CLONE. INSTALL. AWAKEN.</span><button id="copy-setup" type="button">Copy commands</button></div><pre><code id="setup-commands">{commands}</code></pre><p>Use the Node and pnpm versions in <a href={`${GITHUB_REPOSITORY_URL}/blob/main/package.json`}>package.json</a>. Authenticate at least one coding-agent CLI on your machine first.</p></div>
-    <div class="next-steps"><article><span>02 / THE WEBSITE</span><h2>Run this very village.</h2><p>From the repository root, start the dedicated Astro website:</p><pre><code>pnpm --filter @t3tools/marketing dev</code></pre></article><article><span>03 / THE LORE</span><h2>Find your first secret.</h2><p>Open the workspace, find ☾ SAHUR in the corner, and knock three times. There are 20 discoveries. Your editor and terminal are off-limits to secret typing.</p><a href={sitePath("/#secrets")}>Read the field notes ↗</a></article></div>
-    <p class="source-note">This fork keeps upstream package and protocol identifiers where integrations depend on them. That’s compatibility, not a secret installation of the original app.</p>
-    <a class="repository-link" href={GITHUB_REPOSITORY_URL}>Browse the repository ↗</a>
-    <p id="copy-status" role="status" aria-live="polite"></p>
+
+<Layout title="Install | Tung Tung Tung Code" description="Set up Tung Tung Tung Code from source in four steps: Node, an agent CLI, clone, and pnpm dev.">
+  <section class="install wrap">
+    <p class="eyebrow">Install / about ten minutes</p>
+    <h1>Your village.<br /><span>Your machine.</span></h1>
+    <p class="intro">There are no signed builds yet, so the code is the download. Four steps, all in your terminal. Your subscriptions and keys never touch us.</p>
+
+    <ol class="steps">
+      {steps.map((step, i) => (
+        <li class="step">
+          <div class="step-n mono">{String(i + 1).padStart(2, "0")}</div>
+          <div class="step-body">
+            <h2>{step.title}</h2>
+            <p>{step.body}</p>
+            <div class="code">
+              <pre class="mono" data-code>{step.code}</pre>
+              <button type="button" class="copy" data-copy-step>Copy</button>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="trouble">
+      <h2>If something goes wrong</h2>
+      <dl>
+        {troubleshooting.map((t) => (<div><dt>{t.q}</dt><dd>{t.a}</dd></div>))}
+      </dl>
+      <div class="links">
+        <a class="btn" href={`${GITHUB_REPOSITORY_URL}/issues/new`} target="_blank" rel="noopener noreferrer">Open an issue</a>
+        <a class="btn btn-ghost" href={GITHUB_REPOSITORY_URL} target="_blank" rel="noopener noreferrer">Browse the source</a>
+      </div>
+    </div>
+    <p class="fine">Once you're in, find ☾ SAHUR in the corner of the app and knock three times.</p>
   </section>
 </Layout>
+
 <script>
-  document.getElementById("copy-setup")?.addEventListener("click", async () => {
-    const source = document.getElementById("setup-commands");
-    const status = document.getElementById("copy-status");
-    if (!source || !status) return;
-    try { await navigator.clipboard.writeText(source.textContent ?? ""); status.textContent = "Copied. The guardian approves."; }
-    catch { status.textContent = "Clipboard unavailable. Select and copy the commands above."; }
-  });
+  for (const button of document.querySelectorAll<HTMLButtonElement>("[data-copy-step]")) {
+    button.addEventListener("click", async () => {
+      const pre = button.parentElement?.querySelector("[data-code]");
+      const text = (pre?.textContent ?? "").split("\n").map((l) => l.replace(/\s+#.*$/, "")).filter(Boolean).join("\n");
+      try { await navigator.clipboard.writeText(text); button.textContent = "Copied"; }
+      catch { button.textContent = "Select to copy"; }
+      setTimeout(() => (button.textContent = "Copy"), 1800);
+    });
+  }
 </script>
+
 <style>
-  .get-code { max-width: 1040px; padding: 75px 6% 100px; margin: auto; }
-  .eyebrow, .next-steps article > span { font-size: 10px; letter-spacing: .15em; color: var(--accent); }
-  h1 { font-size: clamp(60px, 8vw, 100px); line-height: .98; letter-spacing: -.06em; margin: 30px 0; }
-  h1 em { font-family: Georgia, serif; font-weight: 400; color: var(--accent); }
-  .intro { font-size: 17px; max-width: 620px; color: var(--fg-muted); margin-bottom: 45px; }
-  .source-panel { border: 1px solid var(--border); background: #1a130e; padding: 28px; border-radius: 4px; }
-  .source-heading { display: flex; justify-content: space-between; align-items: center; gap: 15px; font-size: 10px; letter-spacing: .1em; }
-  button { color: var(--bg); background: var(--accent); border: 0; padding: 9px 14px; border-radius: 3px; font-size: 11px; }
-  pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 12px/2 var(--font-mono); color: var(--accent); }
-  .source-panel p, .source-note { font-size: 12px; color: var(--fg-muted); }
-  .next-steps { display: grid; grid-template-columns: 1fr 1fr; gap: 45px; padding: 45px 0; }
-  h2 { font-size: 25px; letter-spacing: -.03em; font-weight: 500; }
-  .next-steps p, .next-steps a { font-size: 13px; color: var(--fg-muted); }
-  .repository-link { display: inline-block; color: var(--accent); margin-top: 20px; font-size: 14px; }
-  #copy-status { font-size: 12px; min-height: 20px; }
-  @media(max-width: 600px) { .get-code { padding-top: 45px; } .source-panel { padding: 18px; } .source-heading { letter-spacing: 0; } .next-steps { grid-template-columns: 1fr; gap: 25px; } }
+  .install { padding: 150px 0 60px; max-width: 880px; }
+  h1 { margin-top: 18px; font-size: clamp(52px, 8vw, 96px); line-height: .95; letter-spacing: -.055em; font-weight: 600; }
+  h1 span { color: var(--accent); }
+  .intro { margin-top: 22px; max-width: 580px; font-size: 18px; color: var(--fg-muted); }
+  .steps { list-style: none; margin-top: 64px; display: grid; gap: 14px; }
+  .step { display: grid; grid-template-columns: 56px 1fr; gap: 8px; padding: 26px 26px 26px 20px; border-radius: var(--radius); background: var(--bg-elev); box-shadow: inset 0 0 0 1px var(--border); }
+  .step-n { font-size: 13px; color: var(--accent); padding-top: 5px; }
+  h2 { font-size: 21px; letter-spacing: -.02em; font-weight: 600; }
+  .step p { margin-top: 6px; color: var(--fg-muted); font-size: 15px; }
+  .code { position: relative; margin-top: 16px; border-radius: 10px; background: #0a0705; box-shadow: inset 0 0 0 1px var(--border); }
+  .code pre { padding: 16px 80px 16px 18px; font-size: 13px; line-height: 1.85; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .copy { position: absolute; top: 10px; right: 10px; height: 26px; padding: 0 11px; border: 0; border-radius: 6px; cursor: pointer; font-size: 12px; background: rgba(246,236,220,.08); color: var(--fg); }
+  .copy:hover { background: rgba(246,236,220,.14); }
+  .trouble { margin-top: 72px; }
+  dl { margin-top: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  dl div { padding: 20px 22px; border-radius: var(--radius); box-shadow: inset 0 0 0 1px var(--border); }
+  dt { font-weight: 500; }
+  dd { margin-top: 6px; color: var(--fg-muted); font-size: 14.5px; }
+  .links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+  .fine { margin-top: 40px; color: var(--fg-dim); font-size: 14px; }
+  @media (max-width: 680px) { dl { grid-template-columns: 1fr; } .step { grid-template-columns: 1fr; } }
 </style>
