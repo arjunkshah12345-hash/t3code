@@ -1,9 +1,8 @@
 ---
-import { getImage, Image } from "astro:assets";
-import appIcon from "../assets/icon.webp";
+import { getImage } from "astro:assets";
 import socialCard from "../assets/social-card.webp";
-import dmSansLatinUrl from "../assets/fonts/dm-sans-latin.woff2?url";
 import "../styles/fonts.css";
+import "../styles/site.css";
 import { GITHUB_REPOSITORY_URL, sitePath } from "../lib/site";
 
 interface Props {
@@ -13,23 +12,34 @@ interface Props {
 }
 
 const {
-  title = "Tung Tung Tung Code",
-  description = "Tung Tung Tung Code. The open-source control plane for coding agents.",
+  title = "Tung Tung Tung Code: every coding agent, one workspace",
+  description = "Run Claude Code, Codex, Cursor, OpenCode, Grok and Antigravity side by side in one open-source desktop workspace. Your subscriptions, your machine. Free and MIT licensed.",
   pageClass,
 } = Astro.props;
 
 // Link unfurlers require a 1200x630 JPG/PNG at an absolute URL.
-const socialImage = await getImage({
-  src: socialCard,
-  width: 1200,
-  height: 630,
-  format: "jpg",
-  quality: 90,
-});
+const socialImage = await getImage({ src: socialCard, width: 1200, height: 630, format: "jpg", quality: 90 });
 const socialImageUrl = new URL(socialImage.src, Astro.site ?? Astro.url);
 const socialImageAlt =
   "Tung Tung Tung Code: the open-source control plane for coding agents, with Claude Code, Codex, Cursor, OpenCode, Grok and Antigravity.";
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
+const structuredData = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Tung Tung Tung Code",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "macOS, Windows, Linux",
+  description,
+  url: canonicalUrl.href,
+  license: "https://opensource.org/licenses/MIT",
+  codeRepository: GITHUB_REPOSITORY_URL,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+});
+const nav = [
+  { href: "/#features", label: "Features" },
+  { href: "/#new", label: "What's new" },
+  { href: "/#faq", label: "FAQ" },
+];
 ---
 
 <html lang="en">
@@ -37,6 +47,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#0e0a07" />
     <link rel="canonical" href={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Tung Tung Tung Code" />
@@ -52,486 +63,64 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageUrl} />
     <meta name="twitter:image:alt" content={socialImageAlt} />
-    <link
-      rel="preload"
-      href={dmSansLatinUrl}
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
     <link rel="icon" href={sitePath("/favicon.ico")} sizes="48x48" />
     <link rel="icon" type="image/png" href={sitePath("/favicon-32x32.png")} sizes="32x32" />
     <link rel="icon" type="image/png" href={sitePath("/favicon-16x16.png")} sizes="16x16" />
     <link rel="apple-touch-icon" href={sitePath("/apple-touch-icon.png")} />
+    <link rel="sitemap" href={sitePath("/sitemap.xml")} />
+    <script type="application/ld+json" set:html={structuredData} />
     <title>{title}</title>
   </head>
   <body>
+    <a class="skip" href="#main">Skip to content</a>
     <div class:list={["page", pageClass]}>
-      <nav class="nav">
+      <header class="nav" data-nav>
         <div class="nav-inner">
-          <a href={sitePath("/")} class="nav-brand" aria-label="Tung Tung Tung Code home">
-          <img class="nav-guardian" src={sitePath("/tung-tung-tung-sahur.webp")} width="28" height="28" alt="" /><span class="nav-tung">Tung Tung Tung</span>
-            <span class="nav-brand-name">Code</span>
+          <a href={sitePath("/")} class="brand" aria-label="Tung Tung Tung Code home">
+            <img src={sitePath("/tung-tung-tung-sahur.webp")} width="26" height="26" alt="" />
+            <span>Tung Tung Tung <b>Code</b></span>
           </a>
-          <div class="nav-right">
-            <a class="nav-link" href={sitePath("/download")}>Download</a>
-            <a
-              class="nav-stars"
-              href={GITHUB_REPOSITORY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Tung Tung Tung Code source on GitHub"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 2.3l2.9 5.88 6.49.94-4.7 4.58 1.11 6.47L12 17.12l-5.8 3.05 1.11-6.47-4.7-4.58 6.49-.94L12 2.3z"/>
-              </svg>
-              <span>Open source</span>
-            </a>
-          </div>
+          <nav class="nav-links" aria-label="Primary">
+            {nav.map((item) => <a href={sitePath(item.href)}>{item.label}</a>)}
+            <a href={GITHUB_REPOSITORY_URL} target="_blank" rel="noopener noreferrer">GitHub</a>
+          </nav>
+          <a class="btn btn-sm" href={sitePath("/download/")}>Get started</a>
         </div>
-      </nav>
+      </header>
 
-      <main class="main">
+      <main id="main">
         <slot />
       </main>
 
       <footer class="footer">
         <div class="footer-inner">
           <div class="footer-brand">
-            <Image
-              src={appIcon}
-              alt=""
-              width={20}
-              height={20}
-              densities={[1, 2, 3]}
-              format="webp"
-              quality={90}
-              loading="lazy"
-              decoding="async"
-            />
-            <span>&copy; {new Date().getFullYear()} Tung Tung Tung Code contributors · MIT licensed</span>
+            <img src={sitePath("/tung-tung-tung-sahur.webp")} width="22" height="22" alt="" loading="lazy" />
+            <span>&copy; {new Date().getFullYear()} Tung Tung Tung Code contributors. MIT licensed.</span>
           </div>
-          <div class="footer-links">
+          <nav class="footer-links" aria-label="Footer">
             <a href={GITHUB_REPOSITORY_URL} target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href={sitePath("/download")}>Download</a>
-            <a href={sitePath("/legal")}>About this fork</a>
-            <a href={sitePath("/privacy-policy")}>Privacy</a>
-            <a href={sitePath("/security-policy")}>Security</a><a href={sitePath("/95")} aria-label="A suspiciously old clock">03:33</a>
-          </div>
+            <a href={`${GITHUB_REPOSITORY_URL}/issues`} target="_blank" rel="noopener noreferrer">Issues</a>
+            <a href={sitePath("/download/")}>Install</a>
+            <a href={sitePath("/legal/")}>About this fork</a>
+            <a href={sitePath("/privacy-policy/")}>Privacy</a>
+            <a href={sitePath("/security-policy/")}>Security</a>
+            <a href={sitePath("/95/")} aria-label="A suspiciously old clock">03:33</a>
+          </nav>
         </div>
-        <p class="mascot-credit">Character image: @noxaasht, via <a href="https://commons.wikimedia.org/wiki/File:Tung_tung_tung_sahur.webp" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>. Displayed with crops; image rights are separate from the code license.</p>
+        <p class="footer-fine">
+          An independent fork of <a href="https://github.com/pingdotgg/t3code" target="_blank" rel="noopener noreferrer">T3 Code</a>, not affiliated with or endorsed by its maintainers.
+          Character image by @noxaasht via <a href="https://commons.wikimedia.org/wiki/File:Tung_tung_tung_sahur.webp" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>.
+          Effects built with <a href="https://dithercn.dev" target="_blank" rel="noopener noreferrer">dithercn</a>, <a href="https://asciicn.sumak.dev" target="_blank" rel="noopener noreferrer">asciicn</a> and <a href="https://gradients.sh" target="_blank" rel="noopener noreferrer">gradients.sh</a> (MIT).
+        </p>
       </footer>
     </div>
 
     <script>
-      const nav = document.querySelector(".nav");
-      const onScroll = () => {
-        if (!nav) return;
-        if (window.scrollY > 12) nav.classList.add("is-scrolled");
-        else nav.classList.remove("is-scrolled");
-      };
+      const nav = document.querySelector("[data-nav]");
+      const onScroll = () => nav?.classList.toggle("is-scrolled", window.scrollY > 12);
       window.addEventListener("scroll", onScroll, { passive: true });
       onScroll();
     </script>
   </body>
 </html>
-
-<style is:global>
-  .nav-tung { font-size:15px;letter-spacing:-.04em;white-space:nowrap; }
-  .nav-guardian { width:28px;height:28px;object-fit:cover;object-position:center 20%;border-radius:6px; }
-  .mascot-credit { max-width:1240px;margin:16px auto 0;padding:0 32px;color:var(--fg-dim);font-size:11px;line-height:1.6; }
-  .mascot-credit a { text-decoration:underline;text-underline-offset:3px; }
-  button:focus-visible,a:focus-visible { outline:2px solid var(--accent);outline-offset:4px; }
-  @media(max-width:480px) { .nav-tung { font-size:12px; } .nav-stars { padding:0 8px; } }
-
-  :root {
-    --bg: #100d0a;
-    --bg-elev: #15110d;
-    --bg-card: #1b150f;
-    --fg: #faf3e8;
-    --fg-muted: #b5aa9b;
-    --fg-dim: #978877;
-    --fg-faint: #75634e;
-    --border: rgba(255, 255, 255, 0.08);
-    --border-strong: rgba(255, 255, 255, 0.14);
-    --accent-h: 74;
-    --accent: oklch(0.68 0.17 var(--accent-h));
-    --accent-dim: oklch(0.68 0.17 var(--accent-h) / 0.15);
-    --ok: oklch(0.72 0.16 150);
-    --warn: oklch(0.76 0.15 75);
-    --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
-    --radius: 12px;
-    --radius-sm: 8px;
-    --radius-lg: 16px;
-  }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  html {
-    color-scheme: dark;
-    scroll-behavior: smooth;
-  }
-
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--font-sans);
-    font-feature-settings: "ss01", "ss02";
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
-    overflow-x: hidden;
-    line-height: 1.5;
-  }
-
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 256px 256px;
-    z-index: 9999;
-  }
-
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  button {
-    font-family: inherit;
-    cursor: pointer;
-    border: 0;
-    background: none;
-    color: inherit;
-  }
-
-  img,
-  svg {
-    display: block;
-    max-width: 100%;
-  }
-
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--fg-dim);
-    font-weight: 500;
-  }
-
-  .display {
-    font-weight: 500;
-    letter-spacing: -0.035em;
-    line-height: 1.05;
-  }
-
-  .container {
-    width: 100%;
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 0 32px;
-  }
-
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    font-weight: 500;
-    font-size: 14px;
-    padding: 10px 18px;
-    border-radius: 8px;
-    transition: transform 0.18s ease, background 0.18s ease,
-      border-color 0.18s ease, color 0.18s ease;
-    white-space: nowrap;
-  }
-
-  .btn-primary {
-    background: var(--fg);
-    color: #09090b;
-    font-weight: 600;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-1px);
-    background: #fff;
-  }
-
-  .btn-primary:active {
-    transform: translateY(0);
-  }
-
-  .btn-ghost {
-    color: var(--fg-muted);
-    border: 1px solid var(--border);
-    background: transparent;
-  }
-
-  .btn-ghost:hover {
-    color: var(--fg);
-    border-color: var(--border-strong);
-    background: rgba(255, 255, 255, 0.02);
-  }
-
-  .btn-lg {
-    padding: 14px 22px;
-    font-size: 15px;
-    border-radius: 10px;
-  }
-
-  .tile {
-    position: relative;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0));
-    overflow: hidden;
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-    border-radius: 4px;
-  }
-
-  @keyframes fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Page-load sequence: [data-rise] plays once with delay --d. */
-  @keyframes rise {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: none; }
-  }
-  [data-rise] {
-    animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-    animation-delay: var(--d, 0ms);
-  }
-  @media (prefers-reduced-motion: reduce) {
-    [data-rise] { animation: none; }
-  }
-</style>
-
-<style>
-  .page {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    overflow-x: clip;
-  }
-
-  .nav {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    background: color-mix(in srgb, var(--bg) 75%, transparent);
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s ease;
-  }
-
-  .nav.is-scrolled {
-    border-bottom-color: var(--border);
-  }
-
-  .nav-inner {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 12px 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-  }
-
-  .nav-brand {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 4px;
-    color: var(--fg);
-    transition: color 0.2s ease;
-  }
-
-  .nav-brand:hover {
-    color: #fff;
-  }
-
-  .nav-brand-mark {
-    height: 1cap;
-    width: auto;
-    flex: none;
-  }
-
-  .nav-brand-name {
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: -0.025em;
-    line-height: 1;
-    color: var(--fg-muted);
-  }
-
-  .nav-right {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .nav-link {
-    padding: 0 10px;
-    color: var(--fg-muted);
-    font-size: 13px;
-    letter-spacing: -0.01em;
-    white-space: nowrap;
-    transition: color 0.18s ease;
-  }
-
-  .nav-link:hover {
-    color: var(--fg);
-  }
-
-  .nav-stars {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    height: 36px;
-    padding: 0 14px;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.02);
-    color: var(--fg-muted);
-    font-size: 13px;
-    letter-spacing: -0.01em;
-    white-space: nowrap;
-    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-  }
-
-  .nav-stars:hover {
-    color: var(--fg);
-    border-color: var(--border-strong);
-    background: rgba(255, 255, 255, 0.04);
-  }
-
-  .nav-stars strong {
-    color: var(--fg);
-    font-weight: 600;
-  }
-
-  .nav-stars svg {
-    color: var(--warn);
-    flex-shrink: 0;
-  }
-
-  .main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .footer {
-    margin-top: auto;
-    border-top: 1px solid var(--border);
-    padding: 40px 0 32px;
-  }
-
-  .footer-inner {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 0 32px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .footer-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: var(--fg-dim);
-  }
-
-  .footer-brand img {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
-  }
-
-  .footer-links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 20px;
-  }
-
-  .footer-links a {
-    font-size: 13px;
-    color: var(--fg-dim);
-    transition: color 0.2s ease;
-  }
-
-  .footer-links a:hover {
-    color: var(--fg);
-  }
-
-  @media (max-width: 820px) {
-    .nav-inner,
-    .footer-inner {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-
-    .legal-document-page .nav {
-      display: none;
-    }
-
-    .footer {
-      padding-bottom: max(32px, env(safe-area-inset-bottom));
-    }
-
-    .footer-inner {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 28px;
-    }
-
-    .footer-links {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      width: 100%;
-      gap: 14px 20px;
-      justify-content: initial;
-    }
-  }
-
-  @media (max-width: 420px) {
-    .nav-inner {
-      gap: 12px;
-    }
-
-    .nav-stars {
-      height: 34px;
-      gap: 6px;
-      padding: 0 12px;
-      font-size: 12px;
-    }
-  }
-</style>
