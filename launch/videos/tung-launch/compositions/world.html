@@ -1,0 +1,101 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #world-night, #world-dawn, #world-glow, #world-stars, #world-town, #world-grain { position: absolute; inset: 0; }
+    #world-night { background: linear-gradient(180deg, #06050c 0%, #0f0b19 48%, #241621 82%, #2e1b1d 100%); }
+    #world-dawn { background: linear-gradient(180deg, #2a2340 0%, #4a2f4c 30%, #864645 56%, #d4804c 78%, #f7c682 100%); opacity: 0; }
+    #world-glow { background: radial-gradient(640px 420px at 640px 900px, rgba(255, 196, 120, 0.85), rgba(255, 150, 80, 0.25) 55%, transparent 75%); opacity: 0; }
+    #world-stars { opacity: 0.85; }
+    #world-stars i { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #fff3dc; }
+    #world-town { pointer-events: none; }
+    #world-town svg { position: absolute; left: 0; bottom: 0; width: 1920px; height: 340px; }
+    #world-clock { position: absolute; left: 120px; top: 150px; transform-origin: 0 0; font: 600 280px/1 var(--font-display); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+    #world-clock .t { position: absolute; left: 0; top: 0; opacity: 0; }
+    #world-clock .t:first-child { position: relative; }
+    #world-clock-meta { position: absolute; left: 128px; top: 470px; font: 500 28px/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+  </style>
+  <div id="root" data-composition-id="world" data-width="1920" data-height="1080" data-layout-allow-overflow data-layout-allow-overlap>
+    <div id="world-night"></div>
+    <div id="world-dawn"></div>
+    <div id="world-stars"></div>
+    <div id="world-glow"></div>
+    <div id="world-town">
+      <svg viewBox="0 0 1920 340" preserveAspectRatio="none" aria-hidden="true">
+        <path id="world-town-back" fill="#120c14" d="M0 340 L0 170 L90 150 L180 175 L260 140 L340 168 L430 150 L520 172 L610 136 L700 160 L800 148 L900 170 L1000 142 L1100 166 L1190 150 L1290 172 L1380 140 L1470 165 L1560 150 L1650 172 L1740 146 L1830 168 L1920 152 L1920 340 Z" />
+        <path id="world-town-front" fill="#07050a" d="M0 340 L0 232 L70 232 L70 212 L125 178 L180 212 L180 246 L250 246 L250 196 L320 156 L390 196 L390 256 L440 256 L440 222 L500 222 L500 262 L575 262 L575 206 L640 166 L705 206 L705 250 L790 250 L790 220 L860 186 L930 220 L930 258 L990 258 L990 214 L1060 214 L1060 250 L1140 250 L1140 200 L1150 200 L1150 236 L1220 236 L1220 196 Q1290 112 1360 196 L1360 236 L1392 236 L1392 92 L1400 74 L1408 92 L1408 252 L1470 252 L1470 208 L1535 168 L1600 208 L1600 254 L1670 254 L1670 226 L1730 192 L1790 226 L1790 248 L1850 248 L1850 214 L1920 214 L1920 340 Z" />
+        <g id="world-windows" fill="#f3b25e">
+          <rect x="140" y="222" width="14" height="18" /><rect x="296" y="210" width="14" height="18" /><rect x="336" y="210" width="14" height="18" />
+          <rect x="620" y="220" width="14" height="18" /><rect x="842" y="230" width="14" height="18" /><rect x="1010" y="228" width="14" height="18" />
+          <rect x="1262" y="206" width="14" height="20" /><rect x="1302" y="206" width="14" height="20" /><rect x="1520" y="220" width="14" height="18" /><rect x="1716" y="236" width="14" height="18" />
+        </g>
+      </svg>
+    </div>
+    <div id="world-clock">
+      <span class="t" id="world-t0">02:58</span>
+      <span class="t" id="world-t1">02:59</span>
+      <span class="t" id="world-t2">03:14</span>
+      <span class="t" id="world-t3">03:47</span>
+      <span class="t" id="world-t4">04:31</span>
+      <span class="t" id="world-t5">05:12</span>
+      <span class="t" id="world-t6">05:38</span>
+      <span class="t" id="world-t7">05:41</span>
+      <span class="t" id="world-t8">05:49</span>
+      <span class="t" id="world-t9">05:56</span>
+      <span class="t" id="world-t10">06:00</span>
+    </div>
+    <div id="world-clock-meta">sahur-alarm · 5 agents</div>
+  </div>
+  <script>
+    (function () {
+      // Stars from a fixed hash, so every frame is identical on every render.
+      const stars = document.querySelector("#world-stars");
+      for (let i = 0; i < 70; i++) {
+        const h = (n) => { const x = Math.sin(i * 127.1 + n * 311.7) * 43758.5453; return x - Math.floor(x); };
+        const s = document.createElement("i");
+        s.style.left = (h(1) * 1920).toFixed(1) + "px";
+        s.style.top = (h(2) * 700).toFixed(1) + "px";
+        s.style.opacity = (0.25 + h(3) * 0.75).toFixed(2);
+        const r = 1.5 + h(4) * 2.5; s.style.width = s.style.height = r.toFixed(1) + "px";
+        stars.appendChild(s);
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      const times = [0, 2.4, 8.0, 9.0, 10.0, 11.0, 11.9, 18.62, 22.0, 25.0, 28.3];
+      times.forEach((t, i) => {
+        tl.set("#world-t" + i, { opacity: 1 }, t);
+        if (i < times.length - 1) tl.set("#world-t" + i, { opacity: 0 }, times[i + 1]);
+      });
+      // The clock jumps during the stall: each jump lands with a small drop.
+      [8.0, 9.0, 10.0, 11.0, 11.9].forEach((t) => {
+        tl.fromTo("#world-clock", { y: -10 }, { y: 0, duration: 0.35, ease: "power3.out" }, t);
+      });
+
+      // The knocks jolt the whole night.
+      [12.9, 13.35, 13.8].forEach((t, i) => {
+        tl.fromTo(["#world-town", "#world-stars"], { x: i % 2 ? 14 : -14 }, { x: 0, duration: 0.3, ease: "elastic.out(1.2, 0.35)" }, t);
+      });
+
+      // The clock steps aside for the knocks and the title, then returns.
+      tl.to("#world-clock", { opacity: 0, scale: 0.96, duration: 0.25, ease: "power2.in" }, 12.55);
+      tl.to("#world-clock", { opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 17.2);
+
+      // Night to dawn across the film.
+      tl.fromTo("#world-dawn", { opacity: 0 }, { opacity: 1, duration: 15, ease: "sine.inOut" }, 14.2);
+      tl.fromTo("#world-stars", { opacity: 0.85 }, { opacity: 0, duration: 10, ease: "sine.in" }, 15);
+      tl.fromTo("#world-glow", { opacity: 0, y: 160 }, { opacity: 1, y: 0, duration: 14, ease: "sine.out" }, 16);
+      tl.fromTo("#world-town-front", { attr: { fill: "#07050a" } }, { attr: { fill: "#2a1410" }, duration: 13, ease: "sine.inOut" }, 15);
+      tl.fromTo("#world-town-back", { attr: { fill: "#120c14" } }, { attr: { fill: "#6a3527" }, duration: 13, ease: "sine.inOut" }, 15);
+      tl.fromTo("#world-windows", { opacity: 1 }, { opacity: 0.15, duration: 6, ease: "sine.in" }, 22);
+
+      // Clock: big in the night, tucked away for the proof, centred for the claim.
+      tl.fromTo("#world-clock", { opacity: 0.0, scale: 0.97 }, { opacity: 1, scale: 1, duration: 0.6, ease: "power3.out" }, 0);
+      tl.fromTo("#world-clock-meta", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0.3);
+      tl.to("#world-clock-meta", { opacity: 0, duration: 0.3 }, 6.6);
+      tl.to("#world-clock", { x: 0, y: -122, scale: 0.21, duration: 0.7, ease: "power3.inOut" }, 18.95);
+      tl.to("#world-clock", { x: 690, y: 0, scale: 0.42, duration: 0.8, ease: "power3.inOut" }, 28.2);
+      tl.to("#world-clock", { opacity: 0, y: -30, duration: 0.5, ease: "power2.in" }, 31.1);
+
+      window.__timelines["world"] = tl;
+    })();
+  </script>
+</template>

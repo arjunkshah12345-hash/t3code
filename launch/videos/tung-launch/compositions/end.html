@@ -1,0 +1,50 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #end-claim { position: absolute; left: 0; right: 0; top: 430px; text-align: center; font: 600 168px/1 var(--font-display); letter-spacing: -0.045em; color: #fff6e8; text-shadow: 0 10px 50px rgba(90, 30, 10, 0.35); }
+    #end-claim span { display: inline-block; opacity: 0; }
+    #end-sun { position: absolute; left: 430px; top: 300px; width: 420px; height: 420px; border-radius: 50%;
+      background: url("assets/tung-tung-tung-sahur.webp") no-repeat; background-size: 965px 1242px; background-position: -307px -96px;
+      border: 8px solid #ffd08a; box-shadow: 0 0 0 14px rgba(255, 208, 138, 0.22), 0 0 120px 30px rgba(255, 190, 110, 0.55); }
+    #end-town { position: absolute; left: 0; bottom: 0; width: 1920px; height: 340px; }
+    #end-word { position: absolute; left: 940px; top: 330px; }
+    #end-word h1 { font: 600 108px/0.98 var(--font-display); letter-spacing: -0.04em; color: #fff6e8; }
+    #end-word h1 span { display: block; opacity: 0; }
+    #end-word h1 .a { color: #ffd08a; }
+    #end-tag { margin-top: 26px; font: 500 34px/1.25 var(--font-display); color: rgba(255, 241, 220, 0.92); opacity: 0; }
+    #end-url { margin-top: 26px; display: inline-block; padding: 16px 22px; border-radius: 14px; background: rgba(24, 12, 6, 0.82); font: 500 28px/1 var(--font-mono); color: #ffd08a; opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="end" data-width="1920" data-height="1080" data-layout-allow-overflow data-layout-allow-overlap>
+    <div id="end-claim"><span id="end-c1">Ship</span> <span id="end-c2">before</span> <span id="end-c3">dawn.</span></div>
+    <div id="end-sun" role="img" aria-label="The Tung Tung Tung Code mascot"></div>
+    <svg id="end-town" viewBox="0 0 1920 340" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#6a3527" d="M0 340 L0 170 L90 150 L180 175 L260 140 L340 168 L430 150 L520 172 L610 136 L700 160 L800 148 L900 170 L1000 142 L1100 166 L1190 150 L1290 172 L1380 140 L1470 165 L1560 150 L1650 172 L1740 146 L1830 168 L1920 152 L1920 340 Z" />
+      <path fill="#2a1410" d="M0 340 L0 232 L70 232 L70 212 L125 178 L180 212 L180 246 L250 246 L250 196 L320 156 L390 196 L390 256 L440 256 L440 222 L500 222 L500 262 L575 262 L575 206 L640 166 L705 206 L705 250 L790 250 L790 220 L860 186 L930 220 L930 258 L990 258 L990 214 L1060 214 L1060 250 L1140 250 L1140 200 L1150 200 L1150 236 L1220 236 L1220 196 Q1290 112 1360 196 L1360 236 L1392 236 L1392 92 L1400 74 L1408 92 L1408 252 L1470 252 L1470 208 L1535 168 L1600 208 L1600 254 L1670 254 L1670 226 L1730 192 L1790 226 L1790 248 L1850 248 L1850 214 L1920 214 L1920 340 Z" />
+    </svg>
+    <div id="end-word">
+      <h1><span id="end-w1">Tung Tung Tung</span><span id="end-w2" class="a">Code</span></h1>
+      <p id="end-tag">Your agents work all night.<br />It knocks when one needs you.</p>
+      <div id="end-url">arjunkshah12345-hash.github.io/tung-tung-tung-code</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const ease = "power4.out";
+      // Local 0 = 28.2 s. Claim.
+      tl.fromTo("#end-c1", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.6, ease }, 0.45);
+      tl.fromTo("#end-c2", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.6, ease }, 0.6);
+      tl.fromTo("#end-c3", { opacity: 0, y: 70 }, { opacity: 1, y: 0, duration: 0.6, ease }, 0.75);
+      tl.to("#end-claim", { opacity: 0, y: -40, duration: 0.4, ease: "power2.in" }, 2.4);
+
+      // The mascot rises like the sun from behind the village.
+      tl.fromTo("#end-sun", { y: 640 }, { y: 0, duration: 1.4, ease: "power3.out" }, 2.45);
+      tl.fromTo("#end-w1", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.6, ease }, 3.0);
+      tl.fromTo("#end-w2", { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.6, ease }, 3.15);
+      tl.fromTo("#end-tag", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.5);
+      tl.fromTo("#end-url", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, 3.7);
+      tl.fromTo("#end-sun", { rotation: 0 }, { rotation: 0, scale: 1.03, duration: 5, ease: "sine.inOut" }, 3.9);
+      window.__timelines["end"] = tl;
+    })();
+  </script>
+</template>
