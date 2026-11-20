@@ -1,0 +1,44 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #world-night, #world-deep, #world-dawn, #world-glow, #world-stars { position: absolute; inset: 0; }
+    #world-night { background: radial-gradient(1400px 800px at 50% 115%, #2a1a22 0%, #120d1a 45%, #07060d 75%); }
+    #world-deep { background: radial-gradient(1300px 700px at 50% 120%, #161026 0%, #07051a 50%, #030208 80%); opacity: 0; }
+    #world-dawn { background: linear-gradient(180deg, #2a2340 0%, #4a2f4c 28%, #864645 55%, #d4804c 78%, #f7c682 100%); opacity: 0; }
+    #world-glow { background: radial-gradient(720px 460px at 50% 105%, rgba(255, 196, 120, 0.85), rgba(255, 150, 80, 0.25) 55%, transparent 75%); opacity: 0; }
+    #world-stars i { position: absolute; border-radius: 50%; background: #fff3dc; }
+  </style>
+  <div id="root" data-composition-id="world" data-width="1920" data-height="1080" data-layout-allow-overflow data-layout-allow-overlap>
+    <div id="world-night"></div>
+    <div id="world-deep"></div>
+    <div id="world-stars"></div>
+    <div id="world-dawn"></div>
+    <div id="world-glow"></div>
+  </div>
+  <script>
+    (function () {
+      // Stars from a fixed hash, so every frame is identical on every render.
+      const stars = document.querySelector("#world-stars");
+      for (let i = 0; i < 90; i++) {
+        const h = (n) => { const x = Math.sin(i * 127.1 + n * 311.7) * 43758.5453; return x - Math.floor(x); };
+        const s = document.createElement("i");
+        const r = 1.4 + h(4) * 2.4;
+        s.style.cssText = `left:${(h(1) * 1920).toFixed(1)}px;top:${(h(2) * 1000).toFixed(1)}px;width:${r.toFixed(1)}px;height:${r.toFixed(1)}px;opacity:${(0.2 + h(3) * 0.7).toFixed(2)}`;
+        stars.appendChild(s);
+      }
+
+      const tl = gsap.timeline({ paused: true });
+      // A slow drift keeps the night alive behind the UI (3 px a second).
+      tl.fromTo("#world-stars", { x: 0 }, { x: -100, duration: 35, ease: "none" }, 0);
+      tl.fromTo("#world-stars", { opacity: 0.5 }, { opacity: 0.5, duration: 0.01 }, 0);
+      // Quiet hours: the night deepens and the stars come out.
+      tl.fromTo("#world-deep", { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.inOut" }, 21.55);
+      tl.to("#world-stars", { opacity: 1, duration: 0.45, ease: "power2.inOut" }, 21.55);
+      // Dawn floods in for the end.
+      tl.fromTo("#world-dawn", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 29.15);
+      tl.to("#world-stars", { opacity: 0, duration: 0.5, ease: "power2.inOut" }, 29.15);
+      tl.fromTo("#world-glow", { opacity: 0, y: 140 }, { opacity: 1, y: 0, duration: 2.4, ease: "power3.out" }, 29.4);
+      window.__timelines["world"] = tl;
+    })();
+  </script>
+</template>
