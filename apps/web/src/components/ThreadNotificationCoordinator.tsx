@@ -36,6 +36,7 @@ import {
   type ThreadNotificationObservation,
 } from "./ThreadNotificationCoordinator.logic";
 import { toastManager } from "./ui/toast";
+import { isWaitingOnYou, setWaitingDocumentCount, shouldKnock } from "../villageWatch";
 
 interface NotificationState extends ThreadNotificationObservation {
   readonly raw: OrchestrationV2ThreadShell;
@@ -96,7 +97,8 @@ export function startThreadNotifications(
               : status === "request"
                 ? "Guest request"
                 : "Input needed";
-    if (hasNotificationSound(mode)) {
+    // Quiet hours silence "finished" knocks; a thread that needs you still knocks.
+    if (hasNotificationSound(mode) && shouldKnock(kind, new Date())) {
       void playNotificationSound(kind, () =>
         hasNotificationSound(getClientSettings().notificationMode),
       );
@@ -167,6 +169,17 @@ export function startThreadNotifications(
     }
   };
 
+  // The window title counts every thread, in every environment, that waits on you.
+  const syncWaitingTitle = () => {
+    let count = 0;
+    for (const entry of watched.values()) {
+      for (const state of entry.previous.values()) {
+        if (state.thread.archivedAt === null && isWaitingOnYou(state.status)) count += 1;
+      }
+    }
+    setWaitingDocumentCount(count);
+  };
+
   const observeThreads = (
     environmentId: EnvironmentId,
     entry: WatchedEnvironment,
@@ -222,6 +235,7 @@ export function startThreadNotifications(
       changed.push([prior, state]);
     }
     entry.previous = next;
+    syncWaitingTitle();
     entry.gate.retain(new Set(next.keys()));
     for (const [prior, state] of changed) {
       entry.gate.observe(state.thread.id, prior, state, {
@@ -254,6 +268,7 @@ export function startThreadNotifications(
         }
         entry.gate.clear();
         entry.previous = new Map();
+        syncWaitingTitle();
       },
       { immediate: true },
     );
@@ -290,6 +305,7 @@ export function startThreadNotifications(
     for (const environmentId of environmentIds) {
       if (!watched.has(environmentId)) watched.set(environmentId, watchEnvironment(environmentId));
     }
+    syncWaitingTitle();
   };
 
   const pruneRemovedEnvironments = () => {
@@ -354,6 +370,7 @@ export function startThreadNotifications(
     unsubscribeEnvironmentIds();
     for (const entry of watched.values()) entry.unsubscribe();
     watched.clear();
+    setWaitingDocumentCount(0);
     stopModeListeners();
   };
 }

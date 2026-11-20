@@ -2,6 +2,7 @@ import { describe, expect, it } from "vite-plus/test";
 
 import {
   buildVillageReport,
+  lastAgentReply,
   messagesFromTurnItems,
   threadMarkdownFilename,
   threadToMarkdown,
@@ -129,7 +130,7 @@ describe("buildVillageReport", () => {
         "",
         "## village-site",
         "",
-        "- **waiting** Approve drum copy",
+        "- **waiting** Approve drum copy · since 8:00 AM",
         "- **done** Fix contrast",
         "",
       ].join("\n"),
@@ -138,5 +139,19 @@ describe("buildVillageReport", () => {
 
   it("says so on a quiet day", () => {
     expect(buildVillageReport([], now)).toContain("Quiet day in the village");
+  });
+});
+
+describe("lastAgentReply", () => {
+  it("returns the agent's latest answer, or null before it has one", () => {
+    expect(lastAgentReply([{ role: "user", text: "Add a snooze" }])).toBeNull();
+    expect(
+      lastAgentReply([
+        { role: "assistant", text: "First" },
+        { role: "user", text: "Again" },
+        { role: "assistant", text: "  Snooze added.  " },
+        { role: "user", text: "Thanks" },
+      ]),
+    ).toBe("Snooze added.");
   });
 });

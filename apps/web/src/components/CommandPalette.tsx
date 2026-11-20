@@ -64,6 +64,8 @@ import {
   LinkIcon,
   MessageSquareIcon,
   NewspaperIcon,
+  BellRingIcon,
+  ReplyIcon,
   FileDownIcon,
   PaletteIcon,
   RotateCcwIcon,
@@ -107,6 +109,7 @@ import { environmentThreadDetails, threadEnvironment } from "../state/threads";
 import { appAtomRegistry } from "../rpc/atomRegistry";
 import {
   buildVillageReport,
+  lastAgentReply,
   messagesFromTurnItems,
   threadMarkdownFilename,
   threadToMarkdown,
@@ -114,6 +117,7 @@ import {
 } from "../threadExport";
 import { downloadPlanAsTextFile } from "../proposedPlan";
 import { resolveSidebarThreadStatus } from "./Sidebar.logic";
+import { pickNextWaitingThread } from "../villageWatch";
 import { readEnvironmentScope, useEnvironmentScope } from "~/state/session";
 import { sourceControlEnvironment } from "../state/sourceControl";
 import { useAtomCommand } from "../state/use-atom-command";
@@ -1310,22 +1314,82 @@ function OpenCommandPaletteDialog(props: {
     projects.find((project) => project.environmentId === environmentId && project.id === projectId)
       ?.title ?? "Other";
 
+  // The thread that has waited longest on you; from a waiting thread, the next one.
+  const nextWaitingThread = pickNextWaitingThread(
+    threads
+      .filter((thread) => thread.archivedAt === null)
+      .map((thread) => ({
+        key: `${thread.environmentId}:${thread.id}`,
+        status: resolveSidebarThreadStatus(thread),
+        updatedAt: thread.updatedAt,
+        thread,
+      })),
+    activeThread ? `${activeThread.environmentId}:${activeThread.id}` : null,
+  );
+  if (nextWaitingThread) {
+    const target = nextWaitingThread.thread;
+    actionItems.push({
+      kind: "action",
+      value: "action:next-waiting-thread",
+      searchTerms: [
+        "next",
+        "waiting",
+        "approval",
+        "input",
+        "needs you",
+        "pending",
+        "knock",
+        "jump",
+      ],
+      title: "Go to next thread waiting on you",
+      description: target.title,
+      icon: <BellRingIcon className={ITEM_ICON_CLASS} />,
+      run: async () => {
+        await navigate({
+          to: "/$environmentId/$threadId",
+          params: buildThreadRouteParams(scopeThreadRef(target.environmentId, target.id)),
+        });
+      },
+    });
+  }
+
   if (activeThread) {
     const exportThread = activeThread;
+    const activeThreadMessages = () =>
+      messagesFromTurnItems(
+        appAtomRegistry.get(
+          environmentThreadDetails.visibleTurnItemsAtom(
+            scopeThreadRef(exportThread.environmentId, exportThread.id),
+          ),
+        ),
+      );
     const buildActiveThreadMarkdown = () =>
       threadToMarkdown({
         title: exportThread.title,
         projectName: projectTitleFor(exportThread.environmentId, exportThread.projectId),
         branch: exportThread.branch,
         model: exportThread.modelSelection?.model ?? null,
-        messages: messagesFromTurnItems(
-          appAtomRegistry.get(
-            environmentThreadDetails.visibleTurnItemsAtom(
-              scopeThreadRef(exportThread.environmentId, exportThread.id),
-            ),
-          ),
-        ),
+        messages: activeThreadMessages(),
       });
+    actionItems.push({
+      kind: "action",
+      value: "action:copy-last-reply",
+      searchTerms: ["copy", "last", "reply", "answer", "response", "agent", "message"],
+      title: "Copy last agent reply",
+      icon: <ReplyIcon className={ITEM_ICON_CLASS} />,
+      run: async () => {
+        const reply = lastAgentReply(activeThreadMessages());
+        if (reply === null) {
+          toastManager.add({
+            type: "info",
+            title: "No reply yet",
+            description: "The agent hasn't answered in this thread.",
+          });
+          return;
+        }
+        await copyMarkdown(reply, "Last reply copied", "The agent's latest answer, as Markdown.");
+      },
+    });
     actionItems.push({
       kind: "action",
       value: "action:copy-thread-markdown",

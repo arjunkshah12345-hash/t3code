@@ -479,6 +479,12 @@ export const SETTINGS_SEARCH_ITEMS = [
     searchTerms: ["alert sound knock wooden chime tung sahur notification"],
   },
   {
+    id: "quiet-hours",
+    title: "Quiet hours",
+    to: "/settings/general",
+    searchTerms: ["quiet hours night sleep mute silence do not disturb dnd knock sound"],
+  },
+  {
     id: "in-app-notifications",
     title: "In-app notifications",
     to: "/settings/general",

@@ -1,4 +1,8 @@
-import { AlertSoundSettings, NotificationSettings } from "./NotificationSettings";
+import {
+  AlertSoundSettings,
+  NotificationSettings,
+  QuietHoursSettings,
+} from "./NotificationSettings";
 import { PRIVACY_POLICY_URL } from "../../legalLinks";
 import { CheckIcon } from "lucide-react";
 import { Link, useNavigate } from "@tanstack/react-router";
@@ -756,6 +760,7 @@ export function GeneralSettingsPanel() {
       <SettingsSection id="notifications" title="Notifications">
         <NotificationSettings />
         <AlertSoundSettings />
+        <QuietHoursSettings />
         <SettingsRow
           {...searchableSetting("in-app-notifications")}
           description="Show a toast when another thread finishes, fails, or needs input or approval while this app has focus."
