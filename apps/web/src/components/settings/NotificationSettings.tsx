@@ -12,6 +12,12 @@ import {
   unlockNotificationAudio,
   writeAlertSound,
 } from "../../threadNotifications";
+import {
+  QUIET_HOURS_LABELS,
+  type QuietHours,
+  readQuietHours,
+  writeQuietHours,
+} from "../../villageWatch";
 import { Button } from "../ui/button";
 import { Select, SelectItem, SelectPopup, SelectTrigger, SelectValue } from "../ui/select";
 import { SettingsRow } from "./settingsLayout";
@@ -126,6 +132,40 @@ export function AlertSoundSettings() {
             Play
           </Button>
         </div>
+      }
+    />
+  );
+}
+
+export function QuietHoursSettings() {
+  const mode = useScopedSettings((settings) => settings.notificationMode);
+  const [preset, setPreset] = useState<QuietHours>(readQuietHours);
+  if (!hasNotificationSound(mode)) return null;
+
+  return (
+    <SettingsRow
+      {...searchableSetting("quiet-hours")}
+      description="Let the village sleep. During these hours a finished thread stays silent. A thread that needs your input or approval still knocks."
+      control={
+        <Select
+          value={preset}
+          onValueChange={(value) => {
+            if (typeof value !== "string" || !Object.hasOwn(QUIET_HOURS_LABELS, value)) return;
+            writeQuietHours(value as QuietHours);
+            setPreset(value as QuietHours);
+          }}
+        >
+          <SelectTrigger size="sm" className="w-full sm:w-48" aria-label="Quiet hours">
+            <SelectValue>{QUIET_HOURS_LABELS[preset]}</SelectValue>
+          </SelectTrigger>
+          <SelectPopup align="end" alignItemWithTrigger={false}>
+            {Object.entries(QUIET_HOURS_LABELS).map(([value, label]) => (
+              <SelectItem key={value} hideIndicator value={value}>
+                {label}
+              </SelectItem>
+            ))}
+          </SelectPopup>
+        </Select>
       }
     />
   );

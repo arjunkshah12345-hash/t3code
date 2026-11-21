@@ -1,0 +1,107 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #rep-pal { position: absolute; left: 360px; top: 360px; width: 1200px; border-radius: 30px; background: var(--surface); border: 1px solid rgba(246, 236, 220, 0.16);
+      box-shadow: 0 60px 140px -30px rgba(0, 0, 0, 0.95); overflow: hidden; opacity: 0; }
+    #rep-pal .pal-in { display: flex; align-items: center; gap: 24px; height: 128px; padding: 0 44px; border-bottom: 1px solid var(--line); font: 500 50px/1 var(--font-display); }
+    #rep-pal .pal-in svg { width: 44px; height: 44px; }
+    #rep-pal .ch { display: none; }
+    #rep-pal .pal-caret { width: 4px; height: 56px; background: var(--accent); margin-left: 2px; }
+    #rep-pal .pal-sec { padding: 26px 44px 12px; font: 500 28px/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
+    #rep-row { position: relative; display: flex; align-items: center; gap: 26px; height: 120px; margin: 0 16px 18px; padding: 0 28px; border-radius: 18px; background: rgba(235, 168, 84, 0.14); font: 500 44px/1 var(--font-display); }
+    #rep-row::before { content: ""; position: absolute; left: 0; top: 22px; bottom: 22px; width: 6px; border-radius: 3px; background: var(--accent); }
+    #rep-row svg { width: 46px; height: 46px; flex: none; color: var(--accent); }
+    #rep-roll { height: 50px; overflow: hidden; }
+    #rep-roll-col b { display: block; height: 50px; line-height: 50px; font-weight: 500; white-space: nowrap; }
+    #rep-desc { margin-left: auto; font-size: 30px; color: var(--ink-muted); opacity: 0; white-space: nowrap; }
+    #rep-key { position: absolute; left: 1384px; top: 730px; display: flex; align-items: center; padding: 0 28px; height: 96px; border-radius: 20px; background: #2c231d; border: 2px solid rgba(246, 236, 220, 0.22); border-bottom-width: 8px; font: 600 40px/1 var(--font-mono); opacity: 0; }
+
+    #rep-title { position: absolute; left: 300px; top: 78px; font: 600 80px/1 var(--font-display); letter-spacing: -0.04em; }
+    #rep-title span { display: inline-block; opacity: 0; }
+    #rep-title .a { color: var(--accent); }
+    #rep-title2 { position: absolute; left: 300px; top: 78px; font: 600 80px/1 var(--font-display); letter-spacing: -0.04em; }
+    #rep-title2 span { display: inline-block; opacity: 0; }
+    #rep-title2 .a { color: var(--accent); }
+    #rep-doc { position: absolute; left: 300px; top: 210px; width: 1320px; height: 740px; border-radius: 30px; background: var(--surface); border: 1px solid rgba(246, 236, 220, 0.16);
+      box-shadow: 0 60px 140px -30px rgba(0, 0, 0, 0.95); opacity: 0; }
+    #rep-doc .label { position: absolute; left: 56px; top: 38px; font: 500 28px/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
+    #rep-lines { position: absolute; left: 56px; top: 96px; font: 400 36px/1.6 var(--font-mono); color: rgba(246, 236, 220, 0.82); }
+    #rep-lines > div { white-space: pre; min-height: 1.6em; }
+    #rep-lines > div { opacity: 0; }
+    #rep-lines .h { color: var(--ink); font-weight: 600; }
+    #rep-lines .w { color: var(--pending); }
+    #rep-lines .g { color: var(--done); }
+    #rep-lines .m { color: var(--accent); }
+    .hl { position: relative; display: inline-block; }
+    .hl i { position: absolute; left: -6px; right: -6px; top: 4px; bottom: 4px; border-radius: 6px; background: rgba(235, 168, 84, 0.28); transform-origin: 0 50%; }
+    .hl b { position: relative; font-weight: 400; }
+  </style>
+  <div id="root" data-composition-id="report" data-width="1920" data-height="1080" data-layout-allow-overflow data-layout-allow-overlap>
+    <div id="rep-pal">
+      <div class="pal-in">
+        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(246,236,220,.5)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
+        <span><span class="ch" id="rep-c1">v</span><span class="ch" id="rep-c2">i</span><span class="ch" id="rep-c3">l</span><span class="ch" id="rep-c4">l</span><span class="ch" id="rep-c5">a</span><span class="ch" id="rep-c6">g</span><span class="ch" id="rep-c7">e</span></span><span class="pal-caret"></span>
+      </div>
+      <div class="pal-sec">Actions</div>
+      <div id="rep-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18h-5" /><path d="M18 14h-8" /><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2" /><rect width="8" height="4" x="10" y="6" rx="1" /></svg>
+        <div id="rep-roll"><div id="rep-roll-col"><b>Go to next thread waiting on you</b><b>Copy last agent reply</b><b>Copy thread as Markdown</b><b>Village report</b></div></div>
+        <span id="rep-desc">Copy today's work as a standup</span>
+      </div>
+    </div>
+    <div id="rep-key">↵ Enter</div>
+
+    <div id="rep-title"><span id="rep-t1">Your</span> <span id="rep-t2">standup,</span> <span id="rep-t3" class="a">written.</span></div>
+    <div id="rep-title2"><span id="rep-u1">Now</span> <span id="rep-u2">with</span> <span id="rep-u3">how</span> <span id="rep-u4">long</span> <span id="rep-u5">they</span> <span id="rep-u6" class="a">waited.</span></div>
+    <div id="rep-doc">
+      <div class="label">Village report copied · Markdown</div>
+      <div id="rep-lines">
+        <div id="rep-l1" class="h"># Village report — Thursday, November 19</div>
+        <div id="rep-l2" class="m">_5 threads · 2 projects · 2 waiting on you_</div>
+        <div id="rep-l3"> </div>
+        <div id="rep-l4" class="h">## sahur-alarm</div>
+        <div id="rep-l5">- <span class="w">**waiting**</span> Add a snooze · <span class="hl"><i id="rep-hl1"></i><b>since 3:14 AM</b></span></div>
+        <div id="rep-l6">- <span class="g">**done**</span> Fix contrast on the moon toggle</div>
+        <div id="rep-l7"> </div>
+        <div id="rep-l8" class="h">## village-site</div>
+        <div id="rep-l9">- <span class="w">**waiting**</span> Pick the drum sample · <span class="hl"><i id="rep-hl2"></i><b>since 4:02 AM</b></span></div>
+        <div id="rep-l10">- <span class="g">**done**</span> Ship the 404 page</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const words = (ids, t) => ids.forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.15, ease: "power2.out" }, t + i * 0.08));
+      // Local 0 = 15.4 s. The palette whips in from the right, matching the exit before it.
+      tl.fromTo("#rep-pal", { opacity: 0, x: 760, filter: "blur(16px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, 0);
+      ["#rep-c1", "#rep-c2", "#rep-c3", "#rep-c4", "#rep-c5", "#rep-c6", "#rep-c7"].forEach((id, i) => tl.set(id, { display: "inline" }, 0.2 + i * 0.05));
+      // The row rolls through the palette's new actions and lands on the report.
+      tl.fromTo("#rep-roll-col", { y: 0 }, { y: -150, duration: 0.5, ease: "power3.inOut" }, 0.15);
+      tl.fromTo("#rep-desc", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 0.62);
+      tl.fromTo("#rep-key", { opacity: 0, y: 30, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0.55);
+      tl.to("#rep-key", { y: 6, scaleY: 0.94, duration: 0.06, ease: "power2.in" }, 0.95);
+      tl.to("#rep-key", { opacity: 0, duration: 0.15 }, 1.02);
+
+      // The palette grows into the report it just copied.
+      tl.to("#rep-pal", { opacity: 0, duration: 0.14, ease: "power2.in" }, 1.0);
+      tl.set("#rep-doc", { opacity: 1 }, 1.0);
+      tl.fromTo("#rep-doc", { scaleX: 0.91, scaleY: 0.45, y: -50 }, { scaleX: 1, scaleY: 1, y: 0, duration: 0.5, ease: "power3.inOut" }, 1.0);
+      ["#rep-l1", "#rep-l2", "#rep-l3", "#rep-l4", "#rep-l5", "#rep-l6", "#rep-l7", "#rep-l8", "#rep-l9", "#rep-l10"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, x: -14, filter: "blur(6px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 1.42 + i * 0.07));
+      words(["#rep-t1", "#rep-t2", "#rep-t3"], 1.45);
+
+      // What's new: when each waiting thread started waiting.
+      tl.to("#rep-title", { opacity: 0, filter: "blur(8px)", duration: 0.18, ease: "power2.in" }, 2.85);
+      words(["#rep-u1", "#rep-u2", "#rep-u3", "#rep-u4", "#rep-u5", "#rep-u6"], 3.0);
+      tl.fromTo("#rep-hl1", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.inOut" }, 3.1);
+      tl.fromTo("#rep-hl2", { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power3.inOut" }, 3.35);
+      tl.to("#rep-l5 .hl b, #rep-l9 .hl b", { color: "#ffd08a", duration: 0.2 }, 3.2);
+
+      // Out, as night deepens.
+      tl.to(["#rep-doc", "#rep-title2"], { opacity: 0, scale: 0.95, filter: "blur(10px)", duration: 0.3, ease: "power3.in" }, 5.85);
+      window.__timelines["report"] = tl;
+    })();
+  </script>
+</template>

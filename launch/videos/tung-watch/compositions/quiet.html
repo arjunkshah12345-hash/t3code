@@ -1,0 +1,142 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #quiet-settings { position: absolute; inset: 0; }
+    #quiet-crumb { position: absolute; left: 210px; top: 92px; font: 500 30px/1 var(--font-display); color: var(--ink-muted); opacity: 0; }
+    #quiet-crumb b { color: var(--ink); font-weight: 500; }
+    #quiet-head { position: absolute; left: 214px; top: 160px; font: 600 46px/1 var(--font-display); opacity: 0; }
+    #quiet-card { position: absolute; left: 210px; top: 236px; width: 1500px; border-radius: 26px; background: var(--surface); border: 1px solid rgba(246, 236, 220, 0.14); opacity: 0; }
+    .qrow { position: relative; display: flex; align-items: center; gap: 40px; padding: 34px 40px; }
+    .qrow + .qrow { border-top: 1px solid var(--line); }
+    .qrow .txt { flex: 1; }
+    .qrow .t { font: 500 38px/1.1 var(--font-display); }
+    .qrow .s { margin-top: 12px; font: 400 28px/1.38 var(--font-display); color: var(--ink-muted); max-width: 980px; }
+    .sel { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 18px; height: 72px; padding: 0 24px; border-radius: 14px; border: 1.5px solid rgba(246, 236, 220, 0.2); background: #15100d; font: 500 32px/1 var(--font-display); white-space: nowrap; }
+    .sel svg { width: 26px; height: 26px; color: var(--ink-dim); }
+    .btn { height: 72px; padding: 0 26px; display: flex; align-items: center; border-radius: 14px; border: 1.5px solid rgba(246, 236, 220, 0.2); font: 500 32px/1 var(--font-display); }
+    #quiet-row3 .new { position: absolute; left: -2px; top: 26px; bottom: 26px; width: 6px; border-radius: 3px; background: var(--accent); opacity: 0; }
+    #quiet-sel { width: 340px; }
+    #quiet-v2 { position: absolute; left: 24px; opacity: 0; }
+    #quiet-menu { position: absolute; left: 1330px; top: 690px; width: 360px; padding: 10px; border-radius: 18px; background: #221a15; border: 1px solid rgba(246, 236, 220, 0.16); box-shadow: 0 40px 90px -20px rgba(0, 0, 0, 0.9); opacity: 0; transform-origin: 50% 0; }
+    #quiet-menu div { height: 66px; padding: 0 18px; display: flex; align-items: center; border-radius: 12px; font: 500 30px/1 var(--font-display); color: var(--ink-muted); }
+    #quiet-opt2 { color: var(--ink) !important; }
+    #quiet-opt2-bg { position: absolute; left: 10px; top: 76px; width: 340px; height: 66px; border-radius: 12px; background: rgba(235, 168, 84, 0.18); opacity: 0; }
+    #quiet-cursor { position: absolute; left: 0; top: 0; width: 60px; height: 74px; filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.6)); opacity: 0; }
+
+    #quiet-lanes { position: absolute; inset: 0; }
+    .lane-t { position: absolute; left: 210px; font: 600 100px/1 var(--font-display); letter-spacing: -0.045em; white-space: nowrap; }
+    .lane-t span { display: inline-block; opacity: 0; }
+    #quiet-ta { top: 290px; }
+    #quiet-tb { top: 650px; }
+    #quiet-tb .a { color: var(--gold); }
+    .pill { position: absolute; left: 1240px; display: flex; align-items: center; gap: 18px; height: 92px; padding: 0 30px; border-radius: 22px; background: #221a15; border: 1px solid rgba(246, 236, 220, 0.16); font: 600 36px/1 var(--font-display); white-space: nowrap; opacity: 0; }
+    .pill svg { width: 40px; height: 40px; }
+    #quiet-pa { top: 210px; }
+    #quiet-pa svg { color: var(--done); }
+    #quiet-pb { top: 560px; }
+    #quiet-pb svg { color: var(--pending); }
+    #quiet-wave { position: absolute; left: 1250px; top: 340px; height: 110px; display: flex; align-items: center; gap: 16px; opacity: 0; }
+    #quiet-wave i { display: block; width: 14px; height: 110px; border-radius: 7px; background: var(--done); }
+    #quiet-silent { position: absolute; left: 1520px; top: 375px; font: 500 34px/1 var(--font-mono); letter-spacing: 0.12em; color: var(--ink-dim); opacity: 0; }
+    .knk { position: absolute; top: 700px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #8a5226; border: 5px solid var(--accent); font: 600 28px/1 var(--font-mono); color: var(--gold); opacity: 0; }
+    #quiet-k1 { left: 1250px; width: 110px; height: 110px; }
+    #quiet-k2 { left: 1390px; width: 110px; height: 110px; }
+    #quiet-k3 { left: 1530px; top: 680px; width: 150px; height: 150px; background: #b06a2c; font-size: 36px; color: #fff6e8; }
+  </style>
+  <div id="root" data-composition-id="quiet" data-width="1920" data-height="1080" data-layout-allow-overflow data-layout-allow-overlap>
+    <div id="quiet-settings">
+      <div id="quiet-crumb">Settings / <b>General</b></div>
+      <div id="quiet-head">Notifications</div>
+      <div id="quiet-card">
+        <div class="qrow">
+          <div class="txt"><div class="t">Thread notifications</div><div class="s">System alerts when a thread finishes, fails, or needs input or approval.</div></div>
+          <div class="sel" style="width: 300px">Sound only<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg></div>
+        </div>
+        <div class="qrow">
+          <div class="txt"><div class="t">Alert sound</div><div class="s">One knock when a thread finishes. Tung, tung, TUNG when one needs your input or approval.</div></div>
+          <div class="sel" style="width: 300px">Wooden knocks<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg></div>
+          <div class="btn">Play</div>
+        </div>
+        <div class="qrow" id="quiet-row3">
+          <i class="new"></i>
+          <div class="txt"><div class="t">Quiet hours</div><div class="s">Let the village sleep. During these hours a finished thread stays silent. A thread that needs your input or approval still knocks.</div></div>
+          <div class="sel" id="quiet-sel"><span id="quiet-v1">Off</span><span id="quiet-v2">10 p.m. – 7 a.m.</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6" /></svg></div>
+        </div>
+      </div>
+      <div id="quiet-menu">
+        <i id="quiet-opt2-bg"></i>
+        <div>Off</div>
+        <div id="quiet-opt2" style="position: relative">10 p.m. – 7 a.m.</div>
+        <div>11 p.m. – 6 a.m.</div>
+        <div>Midnight – 8 a.m.</div>
+      </div>
+    </div>
+
+    <div id="quiet-lanes">
+      <div class="pill" id="quiet-pa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>Thread completed</div>
+      <div id="quiet-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div id="quiet-silent">silent</div>
+      <div class="lane-t" id="quiet-ta"><span id="quiet-a1">Finished</span> <span id="quiet-a2">threads</span> <span id="quiet-a3">sleep.</span></div>
+
+      <div class="pill" id="quiet-pb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /><path d="M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></svg>Approval needed</div>
+      <div class="knk" id="quiet-k1">tung</div>
+      <div class="knk" id="quiet-k2">tung</div>
+      <div class="knk" id="quiet-k3">TUNG</div>
+      <div class="lane-t" id="quiet-tb"><span id="quiet-b1">Stuck</span> <span id="quiet-b2">ones</span> <span id="quiet-b3" class="a">still</span> <span id="quiet-b4" class="a">knock.</span></div>
+    </div>
+    <svg id="quiet-cursor" viewBox="0 0 22 27"><path d="M1 1v21.5l5.6-5.4 3.6 8.4 3.5-1.5-3.6-8.2H18L1 1Z" fill="#fff" stroke="#111" stroke-width="1.4" stroke-linejoin="round" /></svg>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const words = (ids, t) => ids.forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.16, ease: "power2.out" }, t + i * 0.09));
+      // Local 0 = 21.6 s. The night deepens behind; the settings arrive.
+      tl.fromTo("#quiet-crumb", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.15);
+      tl.fromTo("#quiet-head", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.3, ease: "power2.out" }, 0.2);
+      tl.fromTo("#quiet-card", { opacity: 0, y: 60 }, { opacity: 1, y: 0, duration: 0.7, ease: "expo.out" }, 0.25);
+      tl.fromTo("#quiet-row3 .new", { opacity: 0, scaleY: 0 }, { opacity: 1, scaleY: 1, duration: 0.35, ease: "expo.out" }, 0.8);
+
+      // The cursor opens the select and picks a night.
+      tl.set("#quiet-cursor", { x: 1960, y: 1100 }, 0);
+      tl.set("#quiet-cursor", { opacity: 1 }, 0.95);
+      tl.to("#quiet-cursor", { x: 1560, y: 610, duration: 0.6, ease: "power3.inOut" }, 0.95);
+      tl.to("#quiet-sel", { scale: 0.96, duration: 0.06, ease: "power2.in" }, 1.6);
+      tl.to("#quiet-sel", { scale: 1, duration: 0.18, ease: "power2.out" }, 1.66);
+      tl.fromTo("#quiet-menu", { opacity: 0, scale: 0.96, y: -8 }, { opacity: 1, scale: 1, y: 0, duration: 0.2, ease: "power3.out" }, 1.6);
+      tl.to("#quiet-cursor", { x: 1500, y: 790, duration: 0.4, ease: "power3.inOut" }, 1.8);
+      tl.fromTo("#quiet-opt2-bg", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 2.05);
+      tl.to("#quiet-menu", { opacity: 0, scale: 0.97, duration: 0.15, ease: "power2.in" }, 2.3);
+      tl.set("#quiet-v1", { opacity: 0 }, 2.32);
+      tl.fromTo("#quiet-v2", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.25, ease: "expo.out" }, 2.32);
+      tl.to("#quiet-cursor", { x: 1700, y: 1000, opacity: 0, duration: 0.4, ease: "power2.in" }, 2.55);
+
+      // The camera lifts off the settings to what they mean.
+      tl.to("#quiet-settings", { y: -220, opacity: 0, filter: "blur(10px)", duration: 0.4, ease: "power3.in" }, 2.85);
+
+      // Lane A: a finished thread, and its knock goes quiet.
+      words(["#quiet-a1", "#quiet-a2", "#quiet-a3"], 3.15);
+      tl.fromTo("#quiet-pa", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.45, ease: "expo.out" }, 3.2);
+      tl.fromTo("#quiet-wave", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 3.3);
+      const heights = [0.5, 0.9, 0.65, 1, 0.75, 0.95, 0.55, 0.8];
+      document.querySelectorAll("#quiet-wave i").forEach((bar, i) => {
+        tl.fromTo(bar, { scaleY: 0.2 }, { scaleY: heights[i], duration: 0.18, ease: "power2.out" }, 3.3 + i * 0.03);
+        tl.to(bar, { scaleY: heights[(i + 3) % 8] * 0.8, duration: 0.16, ease: "sine.inOut" }, 3.55 + i * 0.02);
+        // Quiet hours: the sound flattens to a line.
+        tl.to(bar, { scaleY: 0.08, opacity: 0.45, duration: 0.35, ease: "power3.inOut" }, 3.8 + i * 0.025);
+      });
+      tl.fromTo("#quiet-silent", { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.3, ease: "power2.out" }, 4.05);
+
+      // Lane B: a stuck thread still knocks, and the frame takes it.
+      words(["#quiet-b1", "#quiet-b2", "#quiet-b3", "#quiet-b4"], 4.0);
+      tl.fromTo("#quiet-pb", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.45, ease: "expo.out" }, 4.0);
+      [["#quiet-k1", 4.434], ["#quiet-k2", 4.702], ["#quiet-k3", 4.97]].forEach(([id, t], i) => {
+        tl.fromTo(id, { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(2.2)" }, t);
+        tl.fromTo("#quiet-lanes", { x: i === 2 ? 18 : (i % 2 ? 10 : -10) }, { x: 0, duration: 0.28, ease: "elastic.out(1.1, 0.4)" }, t);
+      });
+
+      tl.to("#quiet-lanes", { opacity: 0, filter: "blur(10px)", duration: 0.3, ease: "power3.in" }, 7.25);
+      window.__timelines["quiet"] = tl;
+    })();
+  </script>
+</template>

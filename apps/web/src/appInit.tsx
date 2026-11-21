@@ -52,6 +52,7 @@ import { installCommandPaletteCommands } from "./shortcuts/commandPaletteCommand
 import { registerOpenFavoriteEditorCommand } from "./components/chat/OpenInPickerShortcut";
 import { environmentThreadShells } from "./state/threads";
 import { resolveThreadRouteTarget } from "./threadRoutes";
+import { setBaseDocumentTitle } from "./villageWatch";
 
 /** Writes appearance settings onto the document, touching only the groups that changed. */
 function startClientAppearance(): void {
@@ -106,12 +107,14 @@ function startDocumentTitle(): void {
   appAtomRegistry.subscribe(
     primaryServerConfigAtom,
     (config) => {
-      document.title = resolveServerBackedAppDisplayName({
-        baseName: APP_BASE_NAME,
-        fallbackDisplayName: APP_DISPLAY_NAME,
-        fallbackStageLabel: APP_STAGE_LABEL,
-        primaryServerVersion: config?.environment.serverVersion ?? null,
-      });
+      setBaseDocumentTitle(
+        resolveServerBackedAppDisplayName({
+          baseName: APP_BASE_NAME,
+          fallbackDisplayName: APP_DISPLAY_NAME,
+          fallbackStageLabel: APP_STAGE_LABEL,
+          primaryServerVersion: config?.environment.serverVersion ?? null,
+        }),
+      );
     },
     { immediate: true },
   );

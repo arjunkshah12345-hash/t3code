@@ -1,0 +1,135 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    /* The palette, at 2x its real size. */
+    .pal { position: absolute; left: 360px; top: 360px; width: 1200px; border-radius: 30px; background: var(--surface); border: 1px solid rgba(246, 236, 220, 0.16);
+      box-shadow: 0 60px 140px -30px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(0, 0, 0, 0.5); overflow: hidden; }
+    .pal-in { display: flex; align-items: center; gap: 24px; height: 128px; padding: 0 44px; border-bottom: 1px solid var(--line); font: 500 50px/1 var(--font-display); }
+    .pal-in svg { width: 44px; height: 44px; flex: none; }
+    .pal-in .ch { display: none; }
+    .pal-caret { width: 4px; height: 56px; background: var(--accent); margin-left: 2px; }
+    .pal-sec { padding: 26px 44px 12px; font: 500 28px/1 var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
+    .pal-row { position: relative; display: flex; align-items: center; gap: 26px; height: 120px; margin: 0 16px 18px; padding: 0 28px; border-radius: 18px; background: rgba(235, 168, 84, 0.14); font: 500 44px/1 var(--font-display); opacity: 0; }
+    .pal-row::before { content: ""; position: absolute; left: 0; top: 22px; bottom: 22px; width: 6px; border-radius: 3px; background: var(--accent); }
+    .pal-row svg { width: 46px; height: 46px; flex: none; color: var(--accent); }
+    .pal-row .d { margin-left: auto; font-size: 30px; color: var(--ink-muted); }
+    #jump-pal1 { transform-origin: 50% 40%; }
+    #jump-pal2 { opacity: 0; }
+    .key { position: absolute; display: flex; align-items: center; gap: 14px; padding: 0 28px; height: 96px; border-radius: 20px; background: #2c231d; border: 2px solid rgba(246, 236, 220, 0.22); border-bottom-width: 8px; font: 600 40px/1 var(--font-mono); color: var(--ink); opacity: 0; }
+    #jump-key1 { left: 1384px; top: 730px; }
+    #jump-key2 { left: 1384px; top: 730px; }
+
+    /* The real app, inside a window. */
+    #jump-win { position: absolute; left: 160px; top: 40px; width: 1600px; height: 1000px; border-radius: 26px; overflow: hidden; background: #0d0a08; border: 1px solid rgba(246, 236, 220, 0.12);
+      box-shadow: 0 70px 140px -40px rgba(0, 0, 0, 0.9); opacity: 0; }
+    #jump-cam { position: absolute; left: 0; top: 0; width: 1600px; height: 1000px; transform-origin: 0 0; }
+    #jump-cam img { position: absolute; left: 0; top: 0; width: 1600px; height: 1000px; }
+    #jump-ring { position: absolute; left: 6px; top: 100px; width: 244px; height: 64px; border-radius: 10px; border: 3px solid var(--accent); box-shadow: 0 0 24px rgba(235, 168, 84, 0.5); opacity: 0; }
+    #jump-sel { position: absolute; left: 300px; top: 166px; width: 712px; height: 268px; border-radius: 8px; background: rgba(235, 168, 84, 0.2); transform-origin: 0 50%; opacity: 0; }
+    #jump-dim { position: absolute; inset: 0; background: rgba(5, 4, 8, 0.62); opacity: 0; }
+    #jump-toast { position: absolute; right: 40px; bottom: 40px; display: flex; gap: 22px; align-items: flex-start; width: 680px; padding: 30px 34px; border-radius: 22px; background: #221a15; border: 1px solid rgba(246, 236, 220, 0.16);
+      box-shadow: 0 40px 90px -20px rgba(0, 0, 0, 0.9); opacity: 0; }
+    #jump-toast svg { width: 42px; height: 42px; flex: none; color: var(--done); margin-top: 2px; }
+    #jump-toast b { display: block; font: 600 38px/1.1 var(--font-display); }
+    #jump-toast span { display: block; margin-top: 10px; font: 400 29px/1.3 var(--font-display); color: var(--ink-muted); }
+
+    .cap { position: absolute; left: 0; right: 0; bottom: 92px; text-align: center; opacity: 0; }
+    .cap div { display: inline-block; padding: 22px 36px; border-radius: 20px; background: rgba(10, 7, 6, 0.86); font: 600 64px/1 var(--font-display); letter-spacing: -0.03em; }
+    .cap span { display: inline-block; opacity: 0; }
+    .cap .a { color: var(--accent); }
+    #jump-cap2 { left: 160px; right: auto; text-align: left; bottom: 92px; }
+    #jump-cap2 div { margin-left: 40px; }
+  </style>
+  <div id="root" data-composition-id="jump" data-width="1920" data-height="1080" data-layout-allow-overflow data-layout-allow-overlap>
+    <div id="jump-win">
+      <div id="jump-cam">
+        <img src="assets/shots/05-drumroom.jpg" alt="Tung Tung Tung Code: the thread 'Add a snooze to the sahur alarm' and the agent's reply" />
+        <div id="jump-ring"></div>
+        <div id="jump-sel"></div>
+      </div>
+      <div id="jump-dim"></div>
+      <div id="jump-toast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>
+        <div><b>Last reply copied</b><span>The agent's latest answer, as Markdown.</span></div>
+      </div>
+    </div>
+
+    <div class="pal" id="jump-pal1">
+      <div class="pal-in">
+        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(246,236,220,.5)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
+        <span><span class="ch" id="jump-a1">n</span><span class="ch" id="jump-a2">e</span><span class="ch" id="jump-a3">x</span><span class="ch" id="jump-a4">t</span></span><span class="pal-caret"></span>
+      </div>
+      <div class="pal-sec">Actions</div>
+      <div class="pal-row" id="jump-row1">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.27 21a2 2 0 0 0 3.46 0" /><path d="M22 8c0-2.3-.8-4.3-2-6" /><path d="M3.26 15.33A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.67C19.41 13.96 18 12.5 18 8A6 6 0 0 0 6 8c0 4.5-1.41 5.96-2.74 7.33" /><path d="M4 2C2.8 3.7 2 5.7 2 8" /></svg>
+        Go to next thread waiting on you
+      </div>
+    </div>
+    <div class="key" id="jump-key1">↵ Enter</div>
+
+    <div class="pal" id="jump-pal2">
+      <div class="pal-in">
+        <svg viewBox="0 0 24 24" fill="none" stroke="rgba(246,236,220,.5)" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7" /><path d="m21 21-4.3-4.3" /></svg>
+        <span><span class="ch" id="jump-b1">c</span><span class="ch" id="jump-b2">o</span><span class="ch" id="jump-b3">p</span><span class="ch" id="jump-b4">y</span><span class="ch" id="jump-b5">&nbsp;</span><span class="ch" id="jump-b6">l</span><span class="ch" id="jump-b7">a</span><span class="ch" id="jump-b8">s</span><span class="ch" id="jump-b9">t</span></span><span class="pal-caret"></span>
+      </div>
+      <div class="pal-sec">Actions</div>
+      <div class="pal-row" id="jump-row2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7" /><path d="M20 18v-2a4 4 0 0 0-4-4H4" /></svg>
+        Copy last agent reply
+      </div>
+    </div>
+    <div class="key" id="jump-key2">↵ Enter</div>
+
+    <div class="cap" id="jump-cap1"><div><span id="jump-c1">Longest</span> <span id="jump-c2">wait</span> <span id="jump-c3" class="a">first.</span></div></div>
+    <div class="cap" id="jump-cap2"><div><span id="jump-d1">Just</span> <span id="jump-d2">the</span> <span id="jump-d3">answer,</span> <span id="jump-d4" class="a">copied.</span></div></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      const words = (ids, t, gap = 0.08) => ids.forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.15, ease: "power2.out" }, t + i * gap));
+      // Local 0 = 6.3 s. The count pill opens into the palette.
+      tl.fromTo("#jump-pal1", { opacity: 0, scaleX: 0.1, scaleY: 0.22, filter: "blur(14px)" }, { opacity: 1, scaleX: 1, scaleY: 1, filter: "blur(0px)", duration: 0.42, ease: "power3.out" }, 0);
+      ["#jump-a1", "#jump-a2", "#jump-a3", "#jump-a4"].forEach((id, i) => tl.set(id, { display: "inline" }, 0.48 + i * 0.09));
+      tl.fromTo("#jump-row1", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.45, ease: "expo.out" }, 0.62);
+      tl.fromTo("#jump-key1", { opacity: 0, y: 30, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, 1.35);
+      tl.to("#jump-key1", { y: 6, scaleY: 0.94, duration: 0.06, ease: "power2.in" }, 1.85);
+      tl.to("#jump-key1", { y: 0, scaleY: 1, duration: 0.18, ease: "power2.out" }, 1.91);
+
+      // Zoom through the row into the thread it names.
+      tl.to("#jump-key1", { opacity: 0, duration: 0.15 }, 1.92);
+      tl.to("#jump-pal1", { scale: 5, opacity: 0, filter: "blur(18px)", duration: 0.42, ease: "power3.in" }, 1.9);
+      tl.fromTo("#jump-win", { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.6, ease: "expo.out" }, 2.12);
+      // Punch in on the thread that waited longest.
+      tl.fromTo("#jump-cam", { x: 0, y: 0, scale: 1 }, { x: 0, y: 0, scale: 2, duration: 0.6, ease: "power2.inOut" }, 2.75);
+      tl.fromTo("#jump-ring", { opacity: 0, scale: 1.15 }, { opacity: 1, scale: 1, duration: 0.3, ease: "expo.out" }, 3.25);
+      tl.fromTo("#jump-cap1", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 3.12);
+      words(["#jump-c1", "#jump-c2", "#jump-c3"], 3.15);
+      tl.to("#jump-cap1", { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, 4.45);
+      tl.to("#jump-ring", { opacity: 0, duration: 0.2 }, 4.45);
+      tl.to("#jump-cam", { scale: 1, duration: 0.5, ease: "power2.inOut" }, 4.5);
+
+      // Second palette whips in: copy the answer.
+      tl.to("#jump-dim", { opacity: 1, duration: 0.25, ease: "power2.out" }, 4.75);
+      tl.fromTo("#jump-pal2", { opacity: 0, x: 760, filter: "blur(16px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.32, ease: "power3.out" }, 4.85);
+      ["#jump-b1", "#jump-b2", "#jump-b3", "#jump-b4", "#jump-b5", "#jump-b6", "#jump-b7", "#jump-b8", "#jump-b9"].forEach((id, i) => tl.set(id, { display: "inline" }, 5.05 + i * 0.04));
+      tl.fromTo("#jump-row2", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.4, ease: "expo.out" }, 5.45);
+      tl.fromTo("#jump-key2", { opacity: 0, y: 30, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "expo.out" }, 5.8);
+      tl.to("#jump-key2", { y: 6, scaleY: 0.94, duration: 0.06, ease: "power2.in" }, 6.3);
+      tl.to("#jump-key2", { y: 0, scaleY: 1, duration: 0.18, ease: "power2.out" }, 6.36);
+      tl.to(["#jump-pal2", "#jump-key2"], { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, 6.38);
+      tl.to("#jump-dim", { opacity: 0, duration: 0.3, ease: "power2.out" }, 6.4);
+      // Punch into the reply, which lights up as it copies.
+      tl.to("#jump-cam", { x: -578, y: -126, scale: 2.1, duration: 0.55, ease: "power2.inOut" }, 6.4);
+      tl.fromTo("#jump-sel", { opacity: 1, scaleX: 0 }, { opacity: 1, scaleX: 1, duration: 0.4, ease: "power3.inOut" }, 7.0);
+      tl.fromTo("#jump-toast", { opacity: 0, y: 40, filter: "blur(8px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.45, ease: "expo.out" }, 7.6);
+      tl.fromTo("#jump-cap2", { opacity: 0 }, { opacity: 1, duration: 0.12 }, 7.82);
+      words(["#jump-d1", "#jump-d2", "#jump-d3", "#jump-d4"], 7.85);
+
+      // Whip out to the left; the report whips in behind it.
+      tl.to("#jump-cap2", { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, 9.0);
+      tl.to("#jump-win", { x: -900, opacity: 0, filter: "blur(16px)", duration: 0.35, ease: "power3.in" }, 9.05);
+      window.__timelines["jump"] = tl;
+    })();
+  </script>
+</template>

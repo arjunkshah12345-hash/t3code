@@ -39,6 +39,11 @@ export function messagesFromTurnItems(
   return messages;
 }
 
+/** The agent's most recent reply, or null before it has said anything. */
+export function lastAgentReply(messages: ReadonlyArray<ExportMessage>): string | null {
+  return messages.findLast((message) => message.role === "assistant")?.text.trim() || null;
+}
+
 export function threadToMarkdown(input: ThreadMarkdownInput): string {
   const meta = [input.projectName, input.branch, input.model].filter(
     (part): part is string => typeof part === "string" && part.trim().length > 0,
@@ -127,7 +132,14 @@ export function buildVillageReport(
     );
     for (const thread of sorted) {
       const model = thread.model ? ` · ${thread.model}` : "";
-      lines.push(`- **${thread.status}** ${thread.title.trim() || "Untitled thread"}${model}`);
+      // A thread waiting on you has been still since its last update, so that is when it started waiting.
+      const since =
+        thread.status === "waiting"
+          ? ` · since ${new Date(thread.updatedAt).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`
+          : "";
+      lines.push(
+        `- **${thread.status}** ${thread.title.trim() || "Untitled thread"}${model}${since}`,
+      );
     }
   }
   return `${lines.join("\n")}\n`;

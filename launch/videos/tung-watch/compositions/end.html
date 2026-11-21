@@ -1,0 +1,51 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; overflow: hidden; }
+    #end-claim { position: absolute; left: 0; right: 0; top: 330px; text-align: center; font: 600 170px/1 var(--font-display); letter-spacing: -0.05em; color: #fff6e8; text-shadow: 0 10px 50px rgba(90, 30, 10, 0.35); }
+    #end-claim span { display: inline-block; opacity: 0; }
+    #end-claim .a { color: var(--gold); }
+    #end-sun { position: absolute; left: 330px; top: 290px; width: 440px; height: 440px; border-radius: 50%;
+      background: url("assets/tung-tung-tung-sahur.webp") no-repeat; background-size: 1011px 1301px; background-position: -322px -100px;
+      border: 8px solid var(--gold); box-shadow: 0 0 0 16px rgba(255, 208, 138, 0.22), 0 0 140px 30px rgba(255, 190, 110, 0.55); }
+    #end-town { position: absolute; left: 0; bottom: 0; width: 1920px; height: 300px; }
+    #end-word { position: absolute; left: 880px; top: 300px; width: 900px; }
+    #end-word h1 { font: 600 112px/0.96 var(--font-display); letter-spacing: -0.045em; color: #fff6e8; }
+    #end-word h1 span { display: block; opacity: 0; }
+    #end-word h1 .a { color: var(--gold); }
+    #end-chips { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+    #end-chips span { padding: 14px 20px; border-radius: 14px; background: rgba(24, 12, 6, 0.72); border: 1px solid rgba(255, 208, 138, 0.3); font: 500 30px/1 var(--font-display); color: #fff1dc; opacity: 0; }
+    #end-url { display: inline-block; margin-top: 30px; padding: 18px 24px; border-radius: 14px; background: rgba(24, 12, 6, 0.86); white-space: nowrap; font: 500 28px/1 var(--font-mono); color: var(--gold); opacity: 0; }
+  </style>
+  <div id="root" data-composition-id="end" data-width="1920" data-height="1080" data-layout-allow-overflow data-layout-allow-overlap>
+    <div id="end-claim"><div><span id="end-c1">Keep</span> <span id="end-c2">watch.</span></div><div><span id="end-c3">Sleep</span> <span id="end-c4" class="a">anyway.</span></div></div>
+    <div id="end-sun" role="img" aria-label="The Tung Tung Tung Code mascot"></div>
+    <svg id="end-town" viewBox="0 0 1920 300" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#6a3527" d="M0 300 L0 150 L90 130 L180 155 L260 120 L340 148 L430 130 L520 152 L610 116 L700 140 L800 128 L900 150 L1000 122 L1100 146 L1190 130 L1290 152 L1380 120 L1470 145 L1560 130 L1650 152 L1740 126 L1830 148 L1920 132 L1920 300 Z" />
+      <path fill="#2a1410" d="M0 300 L0 200 L70 200 L70 180 L125 146 L180 180 L180 214 L250 214 L250 164 L320 124 L390 164 L390 224 L440 224 L440 190 L500 190 L500 230 L575 230 L575 174 L640 134 L705 174 L705 218 L790 218 L790 188 L860 154 L930 188 L930 226 L990 226 L990 182 L1060 182 L1060 218 L1140 218 L1140 168 L1220 168 L1220 164 Q1290 80 1360 164 L1360 204 L1392 204 L1392 60 L1400 42 L1408 60 L1408 220 L1470 220 L1470 176 L1535 136 L1600 176 L1600 222 L1670 222 L1670 194 L1730 160 L1790 194 L1790 216 L1850 216 L1850 182 L1920 182 L1920 300 Z" />
+    </svg>
+    <div id="end-word">
+      <h1><span id="end-w1">Tung Tung Tung</span><span id="end-w2" class="a">Code</span></h1>
+      <div id="end-chips"><span id="end-f1">Quiet hours</span><span id="end-f2">A title that counts</span><span id="end-f3">Next thread waiting on you</span><span id="end-f4">Copy last agent reply</span><span id="end-f5">Village report, with wait times</span></div>
+      <div id="end-url">arjunkshah12345-hash.github.io/tung-tung-tung-code</div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      // Local 0 = 29.2 s. Dawn floods in behind the claim.
+      [["#end-c1", 0.2], ["#end-c2", 0.3], ["#end-c3", 0.75], ["#end-c4", 0.85]].forEach(([id, t]) =>
+        tl.fromTo(id, { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" }, t));
+      tl.to("#end-claim", { opacity: 0, filter: "blur(10px)", duration: 0.22, ease: "power2.in" }, 2.05);
+
+      // The mascot rises like the sun from behind the village.
+      tl.fromTo("#end-town", { y: 300 }, { y: 0, duration: 0.7, ease: "expo.out" }, 0);
+      tl.fromTo("#end-sun", { y: 720 }, { y: 0, duration: 1.05, ease: "power3.out" }, 2.1);
+      tl.fromTo("#end-w1", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, 2.75);
+      tl.fromTo("#end-w2", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, 2.85);
+      ["#end-f1", "#end-f2", "#end-f3", "#end-f4", "#end-f5"].forEach((id, i) =>
+        tl.fromTo(id, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "expo.out" }, 3.1 + i * 0.07));
+      tl.fromTo("#end-url", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, 3.55);
+      window.__timelines["end"] = tl;
+    })();
+  </script>
+</template>
